@@ -1,413 +1,349 @@
 <!doctype html>
-<html lang="th" data-bs-theme="dark">
+<html lang="th">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Portfolio from GitHub</title>
-  <!-- Bootstrap 5 & Icons -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-  <!-- Marked (Markdown) & DOMPurify (sanitize) -->
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
+  <title>AisunX — Portfolio</title>
+  <meta name="description" content="พอร์ตโฟลิโอแบบทันสมัย ดึงไฟล์จาก GitHub อัตโนมัติ (ภาพ วิดีโอ PDF เอกสาร)" />
+  <meta property="og:title" content="AisunX — Portfolio" />
+  <meta property="og:description" content="พอร์ตโฟลิโอแบบทันสมัย ดึงไฟล์จาก GitHub อัตโนมัติ (ภาพ วิดีโอ PDF เอกสาร)" />
+  <meta property="og:type" content="website" />
+  <meta name="color-scheme" content="light dark" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Crect width='256' height='256' rx='56' fill='%23000'/%3E%3Ctext x='50%25' y='58%25' text-anchor='middle' font-size='140' font-family='Segoe UI, Inter, system-ui' fill='%23fff'%3EA%3C/text%3E%3C/svg%3E" />
   <style>
-    :root{--card-r:1.25rem}
-    body{min-height:100vh}
-    .sticky-top-blur{backdrop-filter:saturate(180%) blur(6px); background:rgba(16,16,19,.6)}
-    .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:1rem}
-    .card{border-radius:var(--card-r)}
-    .preview-embed{aspect-ratio:16/9; width:100%; border:0; border-radius: .75rem}
-    .thumb{width:100%; aspect-ratio:16/9; object-fit:cover; border-radius:.75rem}
-    .badge-case{text-transform:uppercase; letter-spacing:.04em}
-    .skeleton{background: linear-gradient(90deg,#2a2d33 25%,#333842 37%,#2a2d33 63%); background-size:400% 100%; animation:skeleton 1.4s ease infinite}
-    @keyframes skeleton{0%{background-position:100% 50%} 100%{background-position:0 50%}}
-    .cursor{cursor:pointer}
+    :root{
+      --bg: #0b0b10;
+      --card: #12121a;
+      --text: #e7e7ee;
+      --muted: #9aa0aa;
+      --brand: #58C5FF;
+      --ring: #2b90d9;
+      --shadow: 0 10px 30px rgba(0,0,0,.25);
+      --radius: 18px;
+    }
+    @media (prefers-color-scheme: light){
+      :root{
+        --bg: #f6f7fb;
+        --card: #ffffff;
+        --text: #0d0f14;
+        --muted: #495266;
+        --brand: #0077ff;
+        --ring: #2b90d9;
+        --shadow: 0 10px 25px rgba(0,0,0,.08);
+      }
+    }
+    *{ box-sizing: border-box }
+    html,body{ height:100% }
+    body{
+      margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Inter, Roboto, "Noto Sans Thai", Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background: radial-gradient(1200px 600px at 80% -10%, rgba(88,197,255,.15), transparent 55%),
+                  radial-gradient(900px 500px at -10% 10%, rgba(0,119,255,.12), transparent 50%), var(--bg);
+      color: var(--text);
+    }
+    a{ color: inherit }
+    .wrap{ max-width:1200px; margin:0 auto; padding:28px }
+
+    header{
+      position: sticky; top:0; z-index:50; backdrop-filter: saturate(1.3) blur(8px);
+      background: color-mix(in oklab, var(--bg) 85%, transparent);
+      border-bottom: 1px solid color-mix(in oklab, var(--text) 7%, transparent);
+    }
+    .nav{
+      display:flex; align-items:center; gap:14px; justify-content:space-between; padding:10px 0;
+    }
+    .brand{ display:flex; align-items:center; gap:10px; text-decoration:none }
+    .brand .logo{ width:36px; height:36px; border-radius:10px; display:grid; place-items:center; background:var(--card); box-shadow:var(--shadow); border:1px solid color-mix(in oklab, var(--brand) 60%, transparent)}
+    .brand strong{ font-size:18px; letter-spacing:.4px }
+
+    .controls{ display:flex; flex-wrap:wrap; gap:10px; }
+    .chip, .btn{
+      display:inline-flex; align-items:center; gap:8px; border:1px solid color-mix(in oklab, var(--text) 8%, transparent);
+      background: var(--card); color: var(--text); padding:9px 12px; border-radius: 12px; cursor:pointer;
+      transition: transform .05s ease, border-color .2s ease; font-size:14px;
+    }
+    .chip:hover, .btn:hover{ transform: translateY(-1px) }
+    .btn.primary{ border-color: color-mix(in oklab, var(--brand) 60%, transparent) }
+
+    .hero{
+      display:grid; grid-template-columns:1.2fr .8fr; gap:24px; align-items:center; padding:28px 0 12px;
+    }
+    @media (max-width: 900px){ .hero{ grid-template-columns:1fr } }
+    .heroCard{
+      background: linear-gradient(180deg, color-mix(in oklab, var(--brand) 8%, var(--card)), var(--card));
+      border: 1px solid color-mix(in oklab, var(--text) 7%, transparent);
+      box-shadow: var(--shadow); padding:22px; border-radius: var(--radius);
+    }
+    .title{ font-size:34px; line-height:1.15; margin:0 0 8px }
+    .subtitle{ color: var(--muted); margin:0 0 12px; font-size:16px }
+
+    .quickMeta{ display:flex; flex-wrap:wrap; gap:8px; margin-top:10px }
+    .quickMeta .chip{ background: color-mix(in oklab, var(--brand) 10%, var(--card)); border-color: color-mix(in oklab, var(--brand) 20%, transparent) }
+
+    .searchBar{ display:flex; gap:10px; align-items:center; margin-top:14px }
+    .searchBar input, .searchBar select{
+      background: var(--card); color:var(--text); border-radius:12px; border:1px solid color-mix(in oklab, var(--text) 8%, transparent); padding:10px 12px; outline:none; width:100%;
+    }
+
+    .grid{ display:grid; grid-template-columns: repeat(12, 1fr); gap:16px; margin:20px 0 40px }
+    .col-3{ grid-column: span 3 }
+    .col-4{ grid-column: span 4 }
+    .col-6{ grid-column: span 6 }
+    .col-12{ grid-column: span 12 }
+    @media (max-width: 1200px){ .col-3{ grid-column: span 4 } }
+    @media (max-width: 900px){ .col-3, .col-4{ grid-column: span 6 } }
+    @media (max-width: 640px){ .col-3, .col-4, .col-6{ grid-column: span 12 } }
+
+    .card{
+      background: var(--card); border-radius: var(--radius); overflow:hidden; border:1px solid color-mix(in oklab, var(--text) 7%, transparent); box-shadow: var(--shadow);
+      display:flex; flex-direction:column; min-height:220px; position:relative;
+    }
+    .thumb{ aspect-ratio: 16/9; width:100%; display:block; object-fit:cover; background: #0f1117; border-bottom:1px solid color-mix(in oklab, var(--text) 6%, transparent) }
+    .pad{ padding:14px }
+    .card h3{ margin:0 0 6px; font-size:16px }
+    .muted{ color: var(--muted); font-size:13px }
+    .tags{ display:flex; flex-wrap:wrap; gap:6px; margin-top:10px }
+    .tag{ font-size:12px; padding:6px 8px; border-radius:999px; border:1px solid color-mix(in oklab, var(--text) 10%, transparent); background: color-mix(in oklab, var(--brand) 6%, var(--card)) }
+
+    .empty{
+      text-align:center; padding:40px; border:1px dashed color-mix(in oklab, var(--text) 12%, transparent); border-radius:var(--radius); color:var(--muted)
+    }
+
+    footer{ opacity:.85; margin:24px 0 10px; font-size:13px; color:var(--muted) }
+    .sr-only{ position:absolute; width:1px; height:1px; margin:-1px; padding:0; overflow:hidden; clip:rect(0,0,0,0); border:0 }
   </style>
 </head>
-<body class="bg-body text-body">
-  <!-- Top Bar -->
-  <header class="sticky-top sticky-top-blur border-bottom">
-    <div class="container py-3">
-      <div class="d-flex gap-2 align-items-center flex-wrap">
-        <i class="bi bi-magic fs-4 text-primary"></i>
-        <h1 class="h5 m-0 me-auto">Portfolio from GitHub</h1>
-        <div class="form-check form-switch">
-          <input class="form-check-input" type="checkbox" id="darkSwitch" checked>
-          <label class="form-check-label" for="darkSwitch"><i class="bi bi-moon-stars"></i></label>
-        </div>
-      </div>
-      <div class="row g-2 mt-2">
-        <div class="col-6 col-md-3"><input id="owner" class="form-control" placeholder="GitHub Owner (เช่น uio00799)"></div>
-        <div class="col-6 col-md-3"><input id="repo" class="form-control" placeholder="Repository (เช่น CodeBreaker-Academy)"></div>
-        <div class="col-6 col-md-3"><input id="path" class="form-control" placeholder="Path (เช่น portfolio/) - ว่างได้"></div>
-        <div class="col-6 col-md-3"><input id="token" class="form-control" placeholder="Personal Access Token (ไม่บังคับ)" type="password"></div>
-      </div>
-      <div class="d-flex gap-2 mt-2 flex-wrap">
-        <button id="loadBtn" class="btn btn-primary"><i class="bi bi-play"></i> โหลดผลงาน</button>
-        <button id="upBtn" class="btn btn-outline-secondary"><i class="bi bi-arrow-up"></i> ขึ้นหนึ่งระดับ</button>
-        <div class="ms-auto d-flex gap-2 align-items-center flex-wrap">
-          <div class="input-group">
-            <span class="input-group-text"><i class="bi bi-search"></i></span>
-            <input id="search" class="form-control" placeholder="ค้นหาไฟล์/คำสำคัญ...">
-          </div>
-          <select id="filter" class="form-select">
-            <option value="all">ทั้งหมด</option>
-            <option value="image">รูปภาพ</option>
-            <option value="video">วิดีโอ</option>
-            <option value="audio">เสียง</option>
-            <option value="pdf">PDF</option>
-            <option value="word">Word</option>
-            <option value="excel">Excel/CSV</option>
-            <option value="ppt">PowerPoint</option>
-            <option value="md">Markdown</option>
-            <option value="prompt">AI Prompts</option>
-            <option value="code">โค้ด</option>
-            <option value="zip">ไฟล์บีบอัด</option>
-          </select>
-          <select id="sort" class="form-select">
-            <option value="name">เรียงชื่อ A→Z</option>
-            <option value="nameDesc">เรียงชื่อ Z→A</option>
-            <option value="type">เรียงตามประเภท</option>
-          </select>
-        </div>
-      </div>
-      <div id="crumbs" class="small text-body-secondary mt-2"></div>
-      <div class="small mt-1">
-        <span class="me-2">💡 เคล็ดลับ: โฟลเดอร์ <code>portfolio/</code> แยกเป็น <code>images/</code>, <code>videos/</code>, <code>docs/</code>, <code>prompts/</code> จะดูเป็นระเบียบสุด</span>
+<body>
+  <header>
+    <div class="wrap nav">
+      <a class="brand" href="#">
+        <span class="logo" aria-hidden="true">🧩</span>
+        <strong>AisunX · Portfolio</strong>
+      </a>
+      <div class="controls">
+        <button class="chip" id="themeBtn" title="Toggle theme">🌗 สลับธีม</button>
+        <a class="btn primary" href="https://github.com/" target="_blank" rel="noreferrer">⭐ Follow on GitHub</a>
       </div>
     </div>
   </header>
 
-  <main class="container my-4">
-    <div id="stats" class="mb-2 small text-body-secondary"></div>
-    <div id="grid" class="grid"></div>
+  <main class="wrap">
+    <section class="hero">
+      <div class="heroCard">
+        <h1 class="title">รวมผลงานล่าสุด — ดึงตรงจาก GitHub</h1>
+        <p class="subtitle">อัปโหลดไฟล์เข้าโฟลเดอร์ <code>/content</code> ในรีโปของ GitHub แล้วหน้านี้จะดึงมาโชว์ให้อัตโนมัติ (รองรับรูป/วิดีโอ/PDF/เอกสาร)</p>
+        <div class="quickMeta">
+          <span class="chip">⚡ No build tools</span>
+          <span class="chip">📁 Reads /content</span>
+          <span class="chip">🌓 Dark/Light</span>
+          <span class="chip">🔎 ค้นหา + ฟิลเตอร์</span>
+        </div>
+        <div class="searchBar">
+          <input id="search" placeholder="ค้นหาชิ้นงาน เช่น binary, ui, poster, report…" />
+          <select id="typeFilter" title="กรองตามชนิดไฟล์">
+            <option value="all">ทุกชนิด</option>
+            <option value="image">ภาพ</option>
+            <option value="video">วิดีโอ</option>
+            <option value="pdf">PDF</option>
+            <option value="doc">เอกสาร (docx/xlsx/pts)</option>
+            <option value="other">อื่น ๆ</option>
+          </select>
+          <select id="repoSelect" title="เลือกรายการจากรีโป">
+            <option value="">รีโปหลัก (username.github.io)</option>
+          </select>
+        </div>
+      </div>
+      <div class="heroCard">
+        <h2 style="margin:0 0 8px">วิธีใช้งาน (โคตรง่าย)</h2>
+        <ol style="margin:8px 0 0; padding-left:18px; line-height:1.6; color:var(--muted)">
+          <li>สร้างรีโป <strong>username.github.io</strong> (เช่น <strong>AisunX.github.io</strong>)</li>
+          <li>วางไฟล์นี้เป็น <code>index.html</code> ที่รากรีโป</li>
+          <li>สร้างโฟลเดอร์ <code>/content</code> แล้วอัปโหลดผลงานของคุณ</li>
+          <li>รองรับ: <code>.png .jpg .webp .gif .mp4 .webm .pdf .docx .pptx .xlsx</code></li>
+        </ol>
+        <p class="muted" style="margin-top:10px">Tip: ถ้าอยากดึงจากหลายรีโป ให้เพิ่มในเมนูด้านบน (config ในสคริปต์)</p>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="sr-only">รายการผลงาน</h2>
+      <div id="items" class="grid"></div>
+      <div id="empty" class="empty" style="display:none">ยังไม่พบไฟล์ใน <code>/content</code>. อัปโหลดไฟล์ขึ้น GitHub แล้วรีเฟรชหน้านี้ได้เลย ✨</div>
+    </section>
+
+    <footer>
+      สร้างด้วย ❤ โดยคุณ และช่วยแต่งโดย Cornner — รองรับ GitHub API, ทำงานบน GitHub Pages ได้ทันที
+    </footer>
   </main>
 
-  <!-- Modal Preview -->
-  <div class="modal fade" id="previewModal" tabindex="-1">
-    <div class="modal-dialog modal-xl modal-dialog-scrollable">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="previewTitle">พรีวิว</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body" id="previewBody">
-          <div class="ratio ratio-16x9 skeleton" id="loadingPreview"></div>
-        </div>
-        <div class="modal-footer">
-          <a id="openGitHub" class="btn btn-outline-secondary" target="_blank"><i class="bi bi-box-arrow-up-right"></i> เปิดบน GitHub</a>
-          <a id="downloadRaw" class="btn btn-primary" target="_blank"><i class="bi bi-download"></i> ดาวน์โหลด</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <template id="cardTpl">
-    <div class="card h-100 shadow-sm">
-      <div class="p-2">
-        <img class="thumb skeleton" loading="lazy" alt="preview" />
+    <article class="card col-3">
+      <a class="previewLink" target="_blank" rel="noreferrer">
+        <img class="thumb" alt="preview" loading="lazy" />
+      </a>
+      <div class="pad">
+        <h3 class="titleSmall"></h3>
+        <div class="muted fileMeta"></div>
+        <div class="tags"></div>
+        <div class="pad" style="display:none"></div>
       </div>
-      <div class="card-body pt-0 d-flex flex-column">
-        <div class="d-flex align-items-center justify-content-between">
-          <span class="badge rounded-pill text-bg-secondary badge-case cat">other</span>
-          <div class="btn-group btn-group-sm">
-            <button class="btn btn-outline-secondary previewBtn"><i class="bi bi-eye"></i></button>
-            <a class="btn btn-outline-secondary githubBtn" target="_blank" title="Open on GitHub"><i class="bi bi-github"></i></a>
-            <a class="btn btn-outline-secondary rawBtn" target="_blank" title="Download raw"><i class="bi bi-download"></i></a>
-          </div>
-        </div>
-        <h6 class="mt-2 text-truncate name"></h6>
-        <div class="small text-body-secondary path text-truncate"></div>
-      </div>
-    </div>
+    </article>
   </template>
 
   <script>
-    // ===== Config & State =====
-    const els = {
-      owner: document.getElementById('owner'),
-      repo: document.getElementById('repo'),
-      path: document.getElementById('path'),
-      token: document.getElementById('token'),
-      loadBtn: document.getElementById('loadBtn'),
-      upBtn: document.getElementById('upBtn'),
-      search: document.getElementById('search'),
-      filter: document.getElementById('filter'),
-      sort: document.getElementById('sort'),
-      crumbs: document.getElementById('crumbs'),
-      grid: document.getElementById('grid'),
-      stats: document.getElementById('stats'),
-      modal: new bootstrap.Modal(document.getElementById('previewModal')),
-      previewTitle: document.getElementById('previewTitle'),
-      previewBody: document.getElementById('previewBody'),
-      openGitHub: document.getElementById('openGitHub'),
-      downloadRaw: document.getElementById('downloadRaw'),
-      darkSwitch: document.getElementById('darkSwitch')
-    };
+  // ====== BASIC CONFIG ======
+  const USERNAME = (location.hostname.split('.')[0] || 'AisunX').toLowerCase();
+  const DEFAULT_REPO = `${USERNAME}.github.io`;
+  const REPOS = [DEFAULT_REPO]; // 👉 เพิ่มชื่อรีโปอื่น ๆ ได้ เช่น 'portfolio', 'design-assets'
+  const CONTENT_PATHS = ['content', 'assets', 'projects']; // จะลองอ่านตามลำดับ
 
-    const state = {
-      owner: localStorage.getItem('gh_owner') || '',
-      repo: localStorage.getItem('gh_repo') || '',
-      branch: 'main',
-      path: localStorage.getItem('gh_path') || '',
-      token: localStorage.getItem('gh_token') || '',
-      items: [],
-      viewItems: []
-    };
+  // ====== HELPERS ======
+  const EXTS = {
+    image: ['png','jpg','jpeg','webp','gif','svg'],
+    video: ['mp4','webm','mov'],
+    pdf:   ['pdf'],
+    doc:   ['docx','pptx','xlsx','csv','tsv'],
+  };
+  const ICON = {
+    image: '🖼️', video: '🎬', pdf: '📄', doc: '📑', other: '📦'
+  };
+  const byExt = (name) => {
+    const ext = name.split('.').pop().toLowerCase();
+    for (const [k, arr] of Object.entries(EXTS)) if (arr.includes(ext)) return k; 
+    return 'other';
+  };
+  const toRaw = (apiObj) => apiObj.download_url || apiObj.html_url; // API คืน download_url สำหรับ raw
+  const fmtSize = (s) => !s ? '' : (s > 1e6 ? (s/1e6).toFixed(1)+' MB' : s > 1e3 ? (s/1e3).toFixed(1)+' KB' : s+' B');
 
-    // Prefill inputs
-    els.owner.value = state.owner; els.repo.value = state.repo; els.path.value = state.path; els.token.value = state.token;
+  // Office viewer สำหรับ docx/xlsx/pptx
+  const officeViewer = (rawUrl) => `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(rawUrl)}`;
 
-    // Theme switch
-    els.darkSwitch.addEventListener('change', () => {
-      document.documentElement.setAttribute('data-bs-theme', els.darkSwitch.checked ? 'dark' : 'light');
+  const el = (sel, root=document) => root.querySelector(sel);
+  const els = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+
+  // ====== THEME TOGGLE ======
+  const themeBtn = el('#themeBtn');
+  themeBtn?.addEventListener('click', () => {
+    const key = 'theme-preference';
+    const cur = localStorage.getItem(key) || 'auto';
+    const next = cur === 'dark' ? 'light' : cur === 'light' ? 'auto' : 'dark';
+    localStorage.setItem(key, next);
+    applyTheme();
+  });
+  function applyTheme(){
+    const pref = localStorage.getItem('theme-preference') || 'auto';
+    document.documentElement.dataset.theme = pref;
+    themeBtn.textContent = `🌗 ธีม: ${pref}`;
+    if (pref === 'dark') document.documentElement.style.colorScheme = 'dark';
+    else if (pref === 'light') document.documentElement.style.colorScheme = 'light';
+    else document.documentElement.style.colorScheme = 'light dark';
+  }
+  applyTheme();
+
+  // ====== FETCH FROM GITHUB ======
+  const repoSelect = el('#repoSelect');
+  REPOS.forEach(r => {
+    const opt = document.createElement('option');
+    opt.value = r; opt.textContent = r; repoSelect.appendChild(opt);
+  });
+  repoSelect.value = DEFAULT_REPO;
+
+  const search = el('#search');
+  const typeFilter = el('#typeFilter');
+  const itemsWrap = el('#items');
+  const empty = el('#empty');
+
+  let ALL_ITEMS = [];
+
+  async function fetchPath(owner, repo, path){
+    const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
+    const res = await fetch(url, { headers: { 'Accept': 'application/vnd.github+json' }});
+    if (!res.ok) return [];
+    const data = await res.json();
+    return Array.isArray(data) ? data.filter(x => x.type === 'file') : [];
+  }
+
+  async function loadRepo(owner, repo){
+    ALL_ITEMS = [];
+    itemsWrap.innerHTML = '';
+    empty.style.display = 'none';
+
+    for (const p of CONTENT_PATHS){
+      try{
+        const arr = await fetchPath(owner, repo, p);
+        ALL_ITEMS.push(...arr.map(x => ({...x, _repo: repo, _path: p})));
+      }catch(_){ /* noop */ }
+    }
+    // ถ้าโฟลเดอร์ที่กำหนดไม่มีไฟล์ ลองอ่านที่รากรีโปแบบสำรอง
+    if (ALL_ITEMS.length === 0){
+      try{ ALL_ITEMS = await fetchPath(owner, repo, ''); }catch(_){ ALL_ITEMS = []; }
+      ALL_ITEMS = ALL_ITEMS.filter(x => !['index.html','README.md'].includes(x.name));
+    }
+
+    render();
+  }
+
+  function render(){
+    itemsWrap.innerHTML = '';
+    const q = (search.value || '').toLowerCase();
+    const t = typeFilter.value;
+    const list = ALL_ITEMS.filter(it => {
+      const type = byExt(it.name);
+      const okType = (t === 'all') || (type === t) || (t==='doc' && type==='doc');
+      const okText = !q || it.name.toLowerCase().includes(q);
+      return okType && okText;
     });
 
-    const catMap = {
-      image: ['png','jpg','jpeg','gif','webp','svg','avif'],
-      video: ['mp4','webm','mov','m4v'],
-      audio: ['mp3','wav','ogg','m4a','flac'],
-      pdf: ['pdf'],
-      word: ['doc','docx'],
-      excel: ['xls','xlsx','csv'],
-      ppt: ['ppt','pptx'],
-      md: ['md','markdown'],
-      prompt: ['prompt','ai','txt','json','yaml','yml'],
-      code: ['js','ts','py','cs','rb','php','html','css','c','cpp','java','lua','r','ipynb','sql'],
-      zip: ['zip','rar','7z'],
-    };
+    if (list.length === 0){ empty.style.display = 'block'; return; } else empty.style.display = 'none';
 
-    function extOf(name){
-      const n = name.toLowerCase();
-      const dot = n.lastIndexOf('.');
-      const ext = dot>0 ? n.slice(dot+1) : '';
-      // Heuristic for prompts
-      if(n.includes('prompt') || n.includes('claude')) return 'prompt';
-      return ext;
-    }
+    for (const it of list){
+      const type = byExt(it.name);
+      const card = el('#cardTpl').content.firstElementChild.cloneNode(true);
+      card.classList.add('col-3');
 
-    function detectCat(name){
-      const ext = extOf(name);
-      for(const [cat, list] of Object.entries(catMap)){
-        if(list.includes(ext)) return cat;
-      }
-      return 'other';
-    }
+      const previewLink = el('.previewLink', card);
+      const img = el('.thumb', card);
+      const title = el('h3', card);
+      const meta = el('.fileMeta', card);
+      const tags = el('.tags', card);
 
-    function headers(){
-      const h = { 'Accept':'application/vnd.github+json'};
-      const token = els.token.value.trim();
-      if(token) h['Authorization'] = `Bearer ${token}`;
-      return h;
-    }
+      const raw = toRaw(it);
+      title.textContent = it.name;
+      meta.textContent = `${ICON[type]} ${type.toUpperCase()} · ${fmtSize(it.size)} · ${it._repo}/${it._path}`;
 
-    async function getDefaultBranch(owner, repo){
-      const res = await fetch(`https://api.github.com/repos/${owner}/${repo}`, {headers: headers()});
-      if(!res.ok) throw new Error('หา repo ไม่เจอ หรือโดน rate limit');
-      const data = await res.json();
-      return data.default_branch || 'main';
-    }
-
-    function rawUrl(owner, repo, branch, path){
-      // Ensure no leading './'
-      const p = path.replace(/^\.\//,'');
-      return `https://raw.githubusercontent.com/${owner}/${repo}/${encodeURIComponent(branch)}/${p}`;
-    }
-
-    async function listDir(owner, repo, branch, dirPath){
-      const url = `https://api.github.com/repos/${owner}/${repo}/contents/${dirPath?encodeURIComponent(dirPath):''}?ref=${encodeURIComponent(branch)}`;
-      const res = await fetch(url, {headers: headers()});
-      if(!res.ok) throw new Error('โหลดรายการไฟล์ไม่สำเร็จ');
-      return await res.json(); // array of items
-    }
-
-    function setCrumbs(path){
-      const parts = (path||'').split('/').filter(Boolean);
-      let acc = '';
-      let html = `<span class="text-body">/</span> <a class="link-secondary cursor" data-path="">root</a>`;
-      parts.forEach((p,i)=>{
-        acc += (i?'/':'') + p;
-        html += ` <span class="text-body">/</span> <a class="link-secondary cursor" data-path="${acc}">${p}</a>`
-      });
-      els.crumbs.innerHTML = html;
-      els.crumbs.querySelectorAll('a[data-path]').forEach(a=>{
-        a.addEventListener('click', ()=>{ state.path = a.dataset.path; els.path.value = state.path; load();});
-      });
-    }
-
-    function renderStats(){
-      const total = state.items.length;
-      const view = state.viewItems.length;
-      els.stats.textContent = `พบไฟล์ทั้งหมด ${total} รายการ | แสดง ${view} รายการ`;
-    }
-
-    function createCard(item){
-      const tpl = document.getElementById('cardTpl').content.cloneNode(true);
-      const img = tpl.querySelector('img.thumb');
-      const nameEl = tpl.querySelector('.name');
-      const pathEl = tpl.querySelector('.path');
-      const catEl = tpl.querySelector('.cat');
-      const ghBtn = tpl.querySelector('.githubBtn');
-      const rawBtn = tpl.querySelector('.rawBtn');
-      const previewBtn = tpl.querySelector('.previewBtn');
-
-      const cat = detectCat(item.name);
-      catEl.textContent = cat;
-
-      nameEl.textContent = item.name;
-      pathEl.textContent = item.path || item.name;
-      ghBtn.href = item.html_url;
-      rawBtn.href = rawUrl(state.owner, state.repo, state.branch, item.path);
-
-      // Thumbnail chooser
-      const rUrl = rawBtn.href;
-      if(cat==='image') img.src = rUrl;
-      else if(cat==='video') img.src = 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?q=80&w=800&auto=format&fit=crop';
-      else if(cat==='pdf') img.src = 'https://images.unsplash.com/photo-1512758017271-d7b84c2113f1?q=80&w=800&auto=format&fit=crop';
-      else if(cat==='word') img.src = 'https://images.unsplash.com/photo-1587620962725-abab7fe55159?q=80&w=800&auto=format&fit=crop';
-      else if(cat==='excel') img.src = 'https://images.unsplash.com/photo-1551281044-8b89ac2a2a1b?q=80&w=800&auto=format&fit=crop';
-      else if(cat==='ppt') img.src = 'https://images.unsplash.com/photo-1487014679447-9f8336841d58?q=80&w=800&auto=format&fit=crop';
-      else if(cat==='md' || cat==='prompt') img.src = 'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=800&auto=format&fit=crop';
-      else if(cat==='audio') img.src = 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?q=80&w=800&auto=format&fit=crop';
-      else img.src = 'https://images.unsplash.com/photo-1551033406-611cf9a28f67?q=80&w=800&auto=format&fit=crop';
-
-      img.addEventListener('load', ()=> img.classList.remove('skeleton'));
-
-      previewBtn.addEventListener('click', ()=> openPreview(item, cat, rUrl));
-
-      return tpl;
-    }
-
-    function applyFilterSort(){
-      const q = els.search.value.trim().toLowerCase();
-      const f = els.filter.value;
-      let arr = [...state.items];
-      if(q){ arr = arr.filter(x => (x.name.toLowerCase().includes(q) || (x.path||'').toLowerCase().includes(q))); }
-      if(f !== 'all'){
-        arr = arr.filter(x => detectCat(x.name) === f);
-      }
-      const s = els.sort.value;
-      arr.sort((a,b)=>{
-        if(s==='name') return a.name.localeCompare(b.name);
-        if(s==='nameDesc') return b.name.localeCompare(a.name);
-        if(s==='type') return detectCat(a.name).localeCompare(detectCat(b.name)) || a.name.localeCompare(b.name);
-        return 0;
-      });
-      state.viewItems = arr;
-      els.grid.innerHTML = '';
-      arr.forEach(item => els.grid.appendChild(createCard(item)));
-      renderStats();
-    }
-
-    async function load(){
-      try{
-        els.grid.innerHTML = '';
-        els.stats.textContent = 'กำลังโหลด...';
-        // Save inputs
-        state.owner = els.owner.value.trim();
-        state.repo = els.repo.value.trim();
-        state.path = els.path.value.trim();
-        localStorage.setItem('gh_owner', state.owner);
-        localStorage.setItem('gh_repo', state.repo);
-        localStorage.setItem('gh_path', state.path);
-        localStorage.setItem('gh_token', els.token.value.trim());
-
-        state.branch = await getDefaultBranch(state.owner, state.repo);
-        setCrumbs(state.path);
-
-        const entries = await listDir(state.owner, state.repo, state.branch, state.path);
-        // Keep only files for grid; add folders at top as virtual nav cards
-        const folders = entries.filter(e=>e.type==='dir');
-        const files = entries.filter(e=>e.type==='file').map(e=>({
-          name: e.name,
-          path: e.path,
-          html_url: e.html_url,
-          download_url: e.download_url
-        }));
-
-        // Render folder chips under crumbs
-        if(folders.length){
-          let chips = '<div class="mb-3 d-flex flex-wrap gap-2">';
-          for(const d of folders){
-            chips += `<span class="badge rounded-pill text-bg-primary cursor" data-go="${d.path}"><i class='bi bi-folder2-open me-1'></i>${d.name}</span>`
-          }
-          chips += '</div>';
-          els.grid.insertAdjacentHTML('beforebegin', chips);
-          document.querySelectorAll('[data-go]').forEach(el=> el.addEventListener('click', ()=>{ state.path = el.dataset.go; els.path.value = state.path; load();}));
-        }
-
-        state.items = files;
-        applyFilterSort();
-      }catch(err){
-        console.error(err);
-        els.stats.textContent = 'ผิดพลาด: ' + err.message + ' — ลองใส่ Token เพื่อลด rate limit หรือเช็ค owner/repo/path อีกครั้ง';
-      }
-    }
-
-    function parentPath(p){
-      if(!p) return '';
-      const parts = p.split('/').filter(Boolean);
-      parts.pop();
-      return parts.join('/');
-    }
-
-    function openPreview(item, cat, rUrl){
-      els.previewTitle.textContent = item.name;
-      els.openGitHub.href = item.html_url;
-      els.downloadRaw.href = rUrl;
-      els.previewBody.innerHTML = '<div class="ratio ratio-16x9 skeleton"></div>';
-
-      // Render by category
-      if(cat==='image'){
-        const img = new Image(); img.className='thumb'; img.src=rUrl; img.loading='eager';
-        img.style.width='100%'; img.style.height='auto';
-        img.addEventListener('load', ()=>{ els.previewBody.innerHTML=''; els.previewBody.appendChild(img);});
-      }
-      else if(cat==='video'){
-        const v = document.createElement('video'); v.src=rUrl; v.controls=true; v.className='w-100'; v.style.borderRadius='.75rem'; v.setAttribute('playsinline','');
-        els.previewBody.innerHTML=''; els.previewBody.appendChild(v);
-      }
-      else if(cat==='audio'){
-        const a = document.createElement('audio'); a.src=rUrl; a.controls=true; a.className='w-100';
-        els.previewBody.innerHTML=''; els.previewBody.appendChild(a);
-      }
-      else if(cat==='pdf'){
-        const iframe = document.createElement('iframe'); iframe.className='preview-embed'; iframe.src = rUrl; // try direct first
-        els.previewBody.innerHTML=''; els.previewBody.appendChild(iframe);
-      }
-      else if(cat==='word' || cat==='excel' || cat==='ppt'){
-        const viewer = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(rUrl)}`;
-        const iframe = document.createElement('iframe'); iframe.className='preview-embed'; iframe.src = viewer;
-        els.previewBody.innerHTML=''; els.previewBody.appendChild(iframe);
-      }
-      else if(cat==='md' || cat==='prompt' || item.name.toLowerCase().endsWith('.txt')){
-        fetch(rUrl).then(r=>r.text()).then(txt=>{
-          const md = marked.parse(txt, {mangle:true, headerIds:true});
-          const safe = DOMPurify.sanitize(md);
-          const box = document.createElement('div'); box.className='p-3 bg-body-tertiary rounded'; box.innerHTML = safe;
-          els.previewBody.innerHTML=''; els.previewBody.appendChild(box);
-        }).catch(()=>{
-          els.previewBody.innerHTML='<p class="text-danger">โหลดข้อความไม่สำเร็จ</p>';
-        });
-      }
-      else{
-        els.previewBody.innerHTML = `<div class='alert alert-warning'>ไฟล์นี้ไม่มีพรีวิวในเบราว์เซอร์ แต่สามารถดาวน์โหลดได้</div>`;
+      // Preview strategy by type
+      if (type === 'image'){
+        img.src = raw; img.alt = it.name; previewLink.href = raw;
+      } else if (type === 'video'){
+        img.remove();
+        const v = document.createElement('video'); v.className = 'thumb'; v.controls = true; v.src = raw; v.playsInline = true; v.preload = 'metadata';
+        previewLink.appendChild(v); previewLink.href = raw;
+      } else if (type === 'pdf'){
+        img.src = 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 56%22><rect width=%22100%25%22 height=%22100%25%22 fill=%22%2312111a%22/><text x=%2250%25%22 y=%2252%25%22 fill=%22%23fff%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22Segoe UI%22 font-size=%2220%22>PDF Preview</text></svg>';
+        previewLink.href = raw; previewLink.target = '_blank';
+      } else if (type === 'doc'){
+        img.src = 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 56%22><rect width=%22100%25%22 height=%22100%25%22 fill=%22%2312111a%22/><text x=%2250%25%22 y=%2252%25%22 fill=%22%23fff%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22Segoe UI%22 font-size=%2218%22>Office Doc</text></svg>';
+        previewLink.href = officeViewer(raw);
+      } else {
+        img.src = 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 56%22><rect width=%22100%25%22 height=%22100%25%22 fill=%22%2312111a%22/><text x=%2250%25%22 y=%2252%25%22 fill=%22%23fff%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22Segoe UI%22 font-size=%2220%22>File</text></svg>';
+        previewLink.href = raw;
       }
 
-      els.modal.show();
+      // tags
+      const tg1 = document.createElement('span'); tg1.className = 'tag'; tg1.textContent = type;
+      const tg2 = document.createElement('span'); tg2.className = 'tag'; tg2.textContent = it._repo;
+      tags.append(tg1, tg2);
+
+      itemsWrap.appendChild(card);
     }
+  }
 
-    // Handlers
-    els.loadBtn.addEventListener('click', load);
-    els.upBtn.addEventListener('click', ()=>{ state.path = parentPath(state.path); els.path.value = state.path; load(); });
-    els.search.addEventListener('input', applyFilterSort);
-    els.filter.addEventListener('change', applyFilterSort);
-    els.sort.addEventListener('change', applyFilterSort);
+  // Event bindings
+  search.addEventListener('input', render);
+  typeFilter.addEventListener('change', render);
+  repoSelect.addEventListener('change', () => loadRepo(USERNAME, repoSelect.value || DEFAULT_REPO));
 
-    // Auto-init if owner/repo already set
-    if(state.owner && state.repo) load();
+  // Start
+  loadRepo(USERNAME, DEFAULT_REPO);
   </script>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
