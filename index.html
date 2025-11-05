@@ -139,6 +139,9 @@
       assetsRepo: 'portfolio-assets',       // ชื่อ repo ที่เก็บไฟล์สื่อ
       mediaPath: 'media',                   // โฟลเดอร์รูป/วิดีโอใน assetsRepo
       docsPath: 'docs',                     // โฟลเดอร์เอกสารใน assetsRepo
+      // --- extras ---
+      pinnedRepos: [],                      // ใส่ชื่อ repo ที่อยาก "พิน" เอง เช่น ['CodeBreaker-Academy','uio00799.github.io']
+      projectsJsonURL: null                 // ถ้าอยากเลี่ยง rate limit ให้ใส่ลิงก์ JSON ที่ build ไว้ เช่น '/data/projects.json'
     };
 
     // ====== THEME TOGGLE ======
@@ -159,27 +162,51 @@
     const docsGrid = $('#docsGrid');
     const langFilter = $('#langFilter');
 
+    // เก็บชุด repo ปัจจุบันสำหรับ filter
+    let currentRepos = [];
+
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // ====== PROJECTS (GitHub REST) ======
+    // ====== PROJECTS (GitHub REST / Static JSON) ======
     async function loadRepos() {
-      const url = `https://api.github.com/users/${CONFIG.githubUser}/repos?sort=updated&per_page=50`;
-      const res = await fetch(url, { headers: { 'Accept': 'application/vnd.github+json' }});
-      if (!res.ok) { projectGrid.innerHTML = errorCard('โหลด repo ไม่สำเร็จ'); return; }
-      const all = await res.json();
-      // เอา fork ออก และซ่อน repo ที่เป็น github.io เอง
-      const repos = all.filter(r => !r.fork && r.name !== `${CONFIG.githubUser}.github.io`).slice(0, CONFIG.projectsLimit);
-      renderLangFilter(all);
-      renderRepos(repos);
-      langFilter.addEventListener('change', () => {
-        const v = langFilter.value;
-        const filtered = v === 'all' ? repos : repos.filter(r => (r.language || 'Other') === v);
-        renderRepos(filtered);
-      });
+      try {
+        let data = [];
+        if (CONFIG.projectsJsonURL) {
+          const res = await fetch(CONFIG.projectsJsonURL, { cache: 'no-store' });
+          if (!res.ok) throw new Error('โหลด projects.json ไม่สำเร็จ');
+          data = await res.json();
+        } else {
+          const url = `https://api.github.com/users/${CONFIG.githubUser}/repos?sort=updated&per_page=50`;
+          const res = await fetch(url, { headers: { 'Accept': 'application/vnd.github+json' }});
+          if (!res.ok) throw new Error('โหลด repo ไม่สำเร็จ');
+          data = await res.json();
+        }
+
+        let repos = data.filter(r => !r.fork && r.name !== `${CONFIG.githubUser}.github.io`);
+
+        if (CONFIG.pinnedRepos && CONFIG.pinnedRepos.length) {
+          const byName = new Map(repos.map(r => [r.name, r]));
+          repos = CONFIG.pinnedRepos.map(n => byName.get(n)).filter(Boolean);
+        }
+
+        repos = repos.slice(0, CONFIG.projectsLimit);
+
+        currentRepos = repos;
+        renderLangFilter(currentRepos);
+        renderRepos(currentRepos);
+
+        langFilter.addEventListener('change', () => {
+          const v = langFilter.value;
+          const filtered = v === 'all' ? currentRepos : currentRepos.filter(r => (r.language || 'Other') === v);
+          renderRepos(filtered);
+        });
+      } catch (err) {
+        projectGrid.innerHTML = errorCard(err.message || 'มีบางอย่างผิดพลาด');
+      }
     }
 
-    function renderLangFilter(all) {
-      const langs = Array.from(new Set(all.map(r => r.language || 'Other'))).sort();
+    function renderLangFilter(list) {
+      const langs = Array.from(new Set(list.map(r => r.language || 'Other'))).sort();
       langFilter.innerHTML = `<option value="all">All</option>` + langs.map(l => `<option value="${l}">${l}</option>`).join('');
     }
 
@@ -190,7 +217,7 @@
           <article class="glass rounded-2xl p-5 border hover:shadow-glow transition">
             <div class="flex items-start justify-between">
               <h3 class="font-semibold text-lg leading-snug"><a href="${r.homepage || r.html_url}" target="_blank" class="hover:underline">${r.name}</a></h3>
-              <span class="text-xs text-slate-500">★ ${r.stargazers_count}</span>
+              <span class="text-xs text-slate-500">★ ${r.stargazers_count ?? 0}</span>
             </div>
             <p class="mt-2 text-sm text-slate-400">${r.description || ''}</p>
             <div class="mt-3 flex flex-wrap gap-2">${topics}</div>
