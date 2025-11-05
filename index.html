@@ -1,349 +1,250 @@
-<!doctype html>
-<html lang="th">
+<!DOCTYPE html>
+<html lang="th" class="scroll-smooth">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>AisunX — Portfolio</title>
-  <meta name="description" content="พอร์ตโฟลิโอแบบทันสมัย ดึงไฟล์จาก GitHub อัตโนมัติ (ภาพ วิดีโอ PDF เอกสาร)" />
+  <meta name="description" content="ผลงานของ AisunX: โปรเจกต์ โค้ด งานดีไซน์ สื่อ และเอกสารวิจัย บน GitHub Pages" />
   <meta property="og:title" content="AisunX — Portfolio" />
-  <meta property="og:description" content="พอร์ตโฟลิโอแบบทันสมัย ดึงไฟล์จาก GitHub อัตโนมัติ (ภาพ วิดีโอ PDF เอกสาร)" />
+  <meta property="og:description" content="รวมผลงานเด่น โปรเจกต์ และสื่อทั้งหมดของฉัน" />
   <meta property="og:type" content="website" />
-  <meta name="color-scheme" content="light dark" />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Crect width='256' height='256' rx='56' fill='%23000'/%3E%3Ctext x='50%25' y='58%25' text-anchor='middle' font-size='140' font-family='Segoe UI, Inter, system-ui' fill='%23fff'%3EA%3C/text%3E%3C/svg%3E" />
-  <style>
-    :root{
-      --bg: #0b0b10;
-      --card: #12121a;
-      --text: #e7e7ee;
-      --muted: #9aa0aa;
-      --brand: #58C5FF;
-      --ring: #2b90d9;
-      --shadow: 0 10px 30px rgba(0,0,0,.25);
-      --radius: 18px;
-    }
-    @media (prefers-color-scheme: light){
-      :root{
-        --bg: #f6f7fb;
-        --card: #ffffff;
-        --text: #0d0f14;
-        --muted: #495266;
-        --brand: #0077ff;
-        --ring: #2b90d9;
-        --shadow: 0 10px 25px rgba(0,0,0,.08);
+  <meta property="og:image" content="/cover.png" />
+  <meta name="theme-color" content="#0ea5e9" />
+
+  <!-- Tailwind CDN (ง่าย เร็ว ไม่ต้อง build) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // Tailwind config: font + container + dark mode class
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ["Noto Sans Thai", "Inter", "system-ui", "Helvetica", "Arial", "sans-serif"],
+          },
+          boxShadow: {
+            glow: '0 0 30px rgba(14,165,233,0.25)'
+          },
+        }
       }
     }
-    *{ box-sizing: border-box }
-    html,body{ height:100% }
-    body{
-      margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Inter, Roboto, "Noto Sans Thai", Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-      background: radial-gradient(1200px 600px at 80% -10%, rgba(88,197,255,.15), transparent 55%),
-                  radial-gradient(900px 500px at -10% 10%, rgba(0,119,255,.12), transparent 50%), var(--bg);
-      color: var(--text);
-    }
-    a{ color: inherit }
-    .wrap{ max-width:1200px; margin:0 auto; padding:28px }
+  </script>
+  <!-- Google Font (ไทยอ่านง่าย) -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-    header{
-      position: sticky; top:0; z-index:50; backdrop-filter: saturate(1.3) blur(8px);
-      background: color-mix(in oklab, var(--bg) 85%, transparent);
-      border-bottom: 1px solid color-mix(in oklab, var(--text) 7%, transparent);
-    }
-    .nav{
-      display:flex; align-items:center; gap:14px; justify-content:space-between; padding:10px 0;
-    }
-    .brand{ display:flex; align-items:center; gap:10px; text-decoration:none }
-    .brand .logo{ width:36px; height:36px; border-radius:10px; display:grid; place-items:center; background:var(--card); box-shadow:var(--shadow); border:1px solid color-mix(in oklab, var(--brand) 60%, transparent)}
-    .brand strong{ font-size:18px; letter-spacing:.4px }
-
-    .controls{ display:flex; flex-wrap:wrap; gap:10px; }
-    .chip, .btn{
-      display:inline-flex; align-items:center; gap:8px; border:1px solid color-mix(in oklab, var(--text) 8%, transparent);
-      background: var(--card); color: var(--text); padding:9px 12px; border-radius: 12px; cursor:pointer;
-      transition: transform .05s ease, border-color .2s ease; font-size:14px;
-    }
-    .chip:hover, .btn:hover{ transform: translateY(-1px) }
-    .btn.primary{ border-color: color-mix(in oklab, var(--brand) 60%, transparent) }
-
-    .hero{
-      display:grid; grid-template-columns:1.2fr .8fr; gap:24px; align-items:center; padding:28px 0 12px;
-    }
-    @media (max-width: 900px){ .hero{ grid-template-columns:1fr } }
-    .heroCard{
-      background: linear-gradient(180deg, color-mix(in oklab, var(--brand) 8%, var(--card)), var(--card));
-      border: 1px solid color-mix(in oklab, var(--text) 7%, transparent);
-      box-shadow: var(--shadow); padding:22px; border-radius: var(--radius);
-    }
-    .title{ font-size:34px; line-height:1.15; margin:0 0 8px }
-    .subtitle{ color: var(--muted); margin:0 0 12px; font-size:16px }
-
-    .quickMeta{ display:flex; flex-wrap:wrap; gap:8px; margin-top:10px }
-    .quickMeta .chip{ background: color-mix(in oklab, var(--brand) 10%, var(--card)); border-color: color-mix(in oklab, var(--brand) 20%, transparent) }
-
-    .searchBar{ display:flex; gap:10px; align-items:center; margin-top:14px }
-    .searchBar input, .searchBar select{
-      background: var(--card); color:var(--text); border-radius:12px; border:1px solid color-mix(in oklab, var(--text) 8%, transparent); padding:10px 12px; outline:none; width:100%;
-    }
-
-    .grid{ display:grid; grid-template-columns: repeat(12, 1fr); gap:16px; margin:20px 0 40px }
-    .col-3{ grid-column: span 3 }
-    .col-4{ grid-column: span 4 }
-    .col-6{ grid-column: span 6 }
-    .col-12{ grid-column: span 12 }
-    @media (max-width: 1200px){ .col-3{ grid-column: span 4 } }
-    @media (max-width: 900px){ .col-3, .col-4{ grid-column: span 6 } }
-    @media (max-width: 640px){ .col-3, .col-4, .col-6{ grid-column: span 12 } }
-
-    .card{
-      background: var(--card); border-radius: var(--radius); overflow:hidden; border:1px solid color-mix(in oklab, var(--text) 7%, transparent); box-shadow: var(--shadow);
-      display:flex; flex-direction:column; min-height:220px; position:relative;
-    }
-    .thumb{ aspect-ratio: 16/9; width:100%; display:block; object-fit:cover; background: #0f1117; border-bottom:1px solid color-mix(in oklab, var(--text) 6%, transparent) }
-    .pad{ padding:14px }
-    .card h3{ margin:0 0 6px; font-size:16px }
-    .muted{ color: var(--muted); font-size:13px }
-    .tags{ display:flex; flex-wrap:wrap; gap:6px; margin-top:10px }
-    .tag{ font-size:12px; padding:6px 8px; border-radius:999px; border:1px solid color-mix(in oklab, var(--text) 10%, transparent); background: color-mix(in oklab, var(--brand) 6%, var(--card)) }
-
-    .empty{
-      text-align:center; padding:40px; border:1px dashed color-mix(in oklab, var(--text) 12%, transparent); border-radius:var(--radius); color:var(--muted)
-    }
-
-    footer{ opacity:.85; margin:24px 0 10px; font-size:13px; color:var(--muted) }
-    .sr-only{ position:absolute; width:1px; height:1px; margin:-1px; padding:0; overflow:hidden; clip:rect(0,0,0,0); border:0 }
+  <style>
+    /* Utilities เพิ่มเติมแบบเล็ก ๆ */
+    .glass { background: rgba(255,255,255,0.06); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.12); }
+    .text-gradient { background: linear-gradient(90deg, #22d3ee, #60a5fa 60%, #a78bfa); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .grid-auto { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
   </style>
 </head>
-<body>
-  <header>
-    <div class="wrap nav">
-      <a class="brand" href="#">
-        <span class="logo" aria-hidden="true">🧩</span>
-        <strong>AisunX · Portfolio</strong>
-      </a>
-      <div class="controls">
-        <button class="chip" id="themeBtn" title="Toggle theme">🌗 สลับธีม</button>
-        <a class="btn primary" href="https://github.com/" target="_blank" rel="noreferrer">⭐ Follow on GitHub</a>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 font-sans">
+  <!-- Sticky Nav -->
+  <header class="sticky top-0 z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur border-b border-slate-200/60 dark:border-slate-800/60">
+    <nav class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <a href="#top" class="font-bold tracking-tight text-lg">AisunX<span class="text-sky-500">.io</span></a>
+      <div class="flex items-center gap-2">
+        <button id="themeToggle" class="px-3 py-1.5 text-sm rounded-xl border border-slate-300/60 dark:border-slate-700/60 hover:shadow-glow">🌙/☀️</button>
+        <a href="#projects" class="px-3 py-1.5 text-sm rounded-xl hover:bg-slate-100 dark:hover:bg-slate-900">Projects</a>
+        <a href="#media" class="px-3 py-1.5 text-sm rounded-xl hover:bg-slate-100 dark:hover:bg-slate-900">Media</a>
+        <a href="#docs" class="px-3 py-1.5 text-sm rounded-xl hover:bg-slate-100 dark:hover:bg-slate-900">Docs</a>
+        <a href="#contact" class="px-3 py-1.5 text-sm rounded-xl hover:bg-slate-100 dark:hover:bg-slate-900">Contact</a>
       </div>
-    </div>
+    </nav>
   </header>
 
-  <main class="wrap">
-    <section class="hero">
-      <div class="heroCard">
-        <h1 class="title">รวมผลงานล่าสุด — ดึงตรงจาก GitHub</h1>
-        <p class="subtitle">อัปโหลดไฟล์เข้าโฟลเดอร์ <code>/content</code> ในรีโปของ GitHub แล้วหน้านี้จะดึงมาโชว์ให้อัตโนมัติ (รองรับรูป/วิดีโอ/PDF/เอกสาร)</p>
-        <div class="quickMeta">
-          <span class="chip">⚡ No build tools</span>
-          <span class="chip">📁 Reads /content</span>
-          <span class="chip">🌓 Dark/Light</span>
-          <span class="chip">🔎 ค้นหา + ฟิลเตอร์</span>
+  <!-- Hero -->
+  <section id="top" class="relative">
+    <div class="absolute inset-0 bg-[radial-gradient(50%_50%_at_50%_0%,rgba(56,189,248,0.20),rgba(99,102,241,0.10),transparent_70%)] pointer-events-none"></div>
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 sm:py-24">
+      <div class="grid md:grid-cols-2 gap-10 items-center">
+        <div>
+          <p class="text-xs uppercase tracking-[0.2em] text-slate-500">Portfolio • GitHub Pages</p>
+          <h1 class="mt-2 text-4xl sm:text-5xl font-extrabold leading-tight text-gradient">สวัสดี 👋 ผมคือ AisunX — ทำเกม โค้ด เว็บ และสื่อมัลติมีเดีย</h1>
+          <p class="mt-4 text-slate-600 dark:text-slate-300 leading-relaxed">หน้านี้รวมโปรเจกต์จริงที่ทำ ลงโค้ดบน GitHub, ตัวอย่างงานดีไซน์/วิดีโอ, เอกสารวิจัย และลิงก์ที่เกี่ยวข้อง ทั้งหมดเป็น Live demo พร้อมซอร์สโค้ดให้ดู</p>
+          <div class="mt-6 flex flex-wrap gap-3">
+            <a href="#projects" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-sky-500 text-white hover:bg-sky-600 shadow-glow">ดูโปรเจกต์เด่น</a>
+            <a href="./resume.pdf" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-300/70 dark:border-slate-700/70 hover:bg-slate-100 dark:hover:bg-slate-900">ดาวน์โหลดเรซูเม่</a>
+            <a href="https://github.com/AisunX" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-300/70 dark:border-slate-700/70 hover:bg-slate-100 dark:hover:bg-slate-900">GitHub</a>
+          </div>
         </div>
-        <div class="searchBar">
-          <input id="search" placeholder="ค้นหาชิ้นงาน เช่น binary, ui, poster, report…" />
-          <select id="typeFilter" title="กรองตามชนิดไฟล์">
-            <option value="all">ทุกชนิด</option>
-            <option value="image">ภาพ</option>
-            <option value="video">วิดีโอ</option>
-            <option value="pdf">PDF</option>
-            <option value="doc">เอกสาร (docx/xlsx/pts)</option>
-            <option value="other">อื่น ๆ</option>
-          </select>
-          <select id="repoSelect" title="เลือกรายการจากรีโป">
-            <option value="">รีโปหลัก (username.github.io)</option>
-          </select>
+        <div class="md:justify-self-end">
+          <div class="glass rounded-2xl p-4 sm:p-6 border shadow-xl">
+            <video id="heroVideo" class="w-full rounded-xl" autoplay muted loop playsinline poster="/cover.png">
+              <!-- ใส่วิดีโอโปรโมตสั้น ๆ (ไม่บังคับ) -->
+              <source src="/promo.mp4" type="video/mp4" />
+            </video>
+            <div class="mt-3 text-xs text-slate-500">Tip: วิดีโอ/ภาพหน้าปกใส่ไฟล์ <code>promo.mp4</code> / <code>cover.png</code> ที่โฟลเดอร์ราก</div>
+          </div>
         </div>
       </div>
-      <div class="heroCard">
-        <h2 style="margin:0 0 8px">วิธีใช้งาน (โคตรง่าย)</h2>
-        <ol style="margin:8px 0 0; padding-left:18px; line-height:1.6; color:var(--muted)">
-          <li>สร้างรีโป <strong>username.github.io</strong> (เช่น <strong>AisunX.github.io</strong>)</li>
-          <li>วางไฟล์นี้เป็น <code>index.html</code> ที่รากรีโป</li>
-          <li>สร้างโฟลเดอร์ <code>/content</code> แล้วอัปโหลดผลงานของคุณ</li>
-          <li>รองรับ: <code>.png .jpg .webp .gif .mp4 .webm .pdf .docx .pptx .xlsx</code></li>
-        </ol>
-        <p class="muted" style="margin-top:10px">Tip: ถ้าอยากดึงจากหลายรีโป ให้เพิ่มในเมนูด้านบน (config ในสคริปต์)</p>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section id="projects" class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
+    <div class="flex items-end justify-between gap-4 mb-6">
+      <div>
+        <h2 class="text-2xl sm:text-3xl font-bold">Projects</h2>
+        <p class="text-slate-500">ดึงอัตโนมัติจาก GitHub (ล่าสุด 6 repo ที่อัปเดตบ่อย)</p>
       </div>
-    </section>
-
-    <section>
-      <h2 class="sr-only">รายการผลงาน</h2>
-      <div id="items" class="grid"></div>
-      <div id="empty" class="empty" style="display:none">ยังไม่พบไฟล์ใน <code>/content</code>. อัปโหลดไฟล์ขึ้น GitHub แล้วรีเฟรชหน้านี้ได้เลย ✨</div>
-    </section>
-
-    <footer>
-      สร้างด้วย ❤ โดยคุณ และช่วยแต่งโดย Cornner — รองรับ GitHub API, ทำงานบน GitHub Pages ได้ทันที
-    </footer>
-  </main>
-
-  <template id="cardTpl">
-    <article class="card col-3">
-      <a class="previewLink" target="_blank" rel="noreferrer">
-        <img class="thumb" alt="preview" loading="lazy" />
-      </a>
-      <div class="pad">
-        <h3 class="titleSmall"></h3>
-        <div class="muted fileMeta"></div>
-        <div class="tags"></div>
-        <div class="pad" style="display:none"></div>
+      <div class="flex items-center gap-2">
+        <label class="text-sm text-slate-500">Filter:</label>
+        <select id="langFilter" class="px-3 py-2 rounded-xl border border-slate-300/70 dark:border-slate-700/70 bg-white dark:bg-slate-900"></select>
       </div>
-    </article>
-  </template>
+    </div>
+    <div id="projectGrid" class="grid gap-4 sm:gap-6 grid-auto"></div>
+  </section>
+
+  <!-- Media Gallery -->
+  <section id="media" class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
+    <h2 class="text-2xl sm:text-3xl font-bold mb-2">Media</h2>
+    <p class="text-slate-500 mb-6">รูป / วิดีโอ จาก repo <code>portfolio-assets</code> โฟลเดอร์ <code>media/</code></p>
+    <div id="mediaGrid" class="grid gap-4 sm:gap-6 grid-auto"></div>
+  </section>
+
+  <!-- Docs -->
+  <section id="docs" class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
+    <h2 class="text-2xl sm:text-3xl font-bold mb-2">Docs</h2>
+    <p class="text-slate-500 mb-6">PDF/Word/Excel จาก repo <code>portfolio-assets</code> โฟลเดอร์ <code>docs/</code></p>
+    <div id="docsGrid" class="grid gap-4 sm:gap-6 grid-auto"></div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
+    <div class="glass rounded-2xl p-6 md:p-8">
+      <h2 class="text-2xl sm:text-3xl font-bold mb-3">Contact</h2>
+      <p class="text-slate-400 mb-6">เปิดรับงาน/คุยโปรเจกต์ใหม่ ๆ — ทักมาได้เลย</p>
+      <div class="flex flex-wrap gap-3">
+        <a href="mailto:hello@aisunx.dev" class="px-4 py-2 rounded-xl bg-sky-500 text-white hover:bg-sky-600">อีเมล</a>
+        <a href="https://x.com/" target="_blank" class="px-4 py-2 rounded-xl border border-slate-300/70 dark:border-slate-700/70 hover:bg-slate-100 dark:hover:bg-slate-900">X / Twitter</a>
+        <a href="https://www.youtube.com/" target="_blank" class="px-4 py-2 rounded-xl border border-slate-300/70 dark:border-slate-700/70 hover:bg-slate-100 dark:hover:bg-slate-900">YouTube</a>
+        <a href="https://www.tiktok.com/" target="_blank" class="px-4 py-2 rounded-xl border border-slate-300/70 dark:border-slate-700/70 hover:bg-slate-100 dark:hover:bg-slate-900">TikTok</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="border-t border-slate-200/70 dark:border-slate-800/70">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 text-center text-sm text-slate-500">
+      © <span id="year"></span> AisunX — Built on GitHub Pages • <a href="https://github.com/AisunX/AisunX.github.io" class="underline" target="_blank">Source</a>
+    </div>
+  </footer>
 
   <script>
-  // ====== BASIC CONFIG ======
-  const USERNAME = (location.hostname.split('.')[0] || 'AisunX').toLowerCase();
-  const DEFAULT_REPO = `${USERNAME}.github.io`;
-  const REPOS = [DEFAULT_REPO]; // 👉 เพิ่มชื่อรีโปอื่น ๆ ได้ เช่น 'portfolio', 'design-assets'
-  const CONTENT_PATHS = ['content', 'assets', 'projects']; // จะลองอ่านตามลำดับ
+    // ====== BASIC CONFIG (ปรับตามของจริง) ======
+    const CONFIG = {
+      githubUser: 'AisunX',                 // ชื่อผู้ใช้ GitHub ของคุณ
+      projectsLimit: 6,                     // จำนวน repo ที่จะแสดง
+      assetsRepo: 'portfolio-assets',       // ชื่อ repo ที่เก็บไฟล์สื่อ
+      mediaPath: 'media',                   // โฟลเดอร์รูป/วิดีโอใน assetsRepo
+      docsPath: 'docs',                     // โฟลเดอร์เอกสารใน assetsRepo
+    };
 
-  // ====== HELPERS ======
-  const EXTS = {
-    image: ['png','jpg','jpeg','webp','gif','svg'],
-    video: ['mp4','webm','mov'],
-    pdf:   ['pdf'],
-    doc:   ['docx','pptx','xlsx','csv','tsv'],
-  };
-  const ICON = {
-    image: '🖼️', video: '🎬', pdf: '📄', doc: '📑', other: '📦'
-  };
-  const byExt = (name) => {
-    const ext = name.split('.').pop().toLowerCase();
-    for (const [k, arr] of Object.entries(EXTS)) if (arr.includes(ext)) return k; 
-    return 'other';
-  };
-  const toRaw = (apiObj) => apiObj.download_url || apiObj.html_url; // API คืน download_url สำหรับ raw
-  const fmtSize = (s) => !s ? '' : (s > 1e6 ? (s/1e6).toFixed(1)+' MB' : s > 1e3 ? (s/1e3).toFixed(1)+' KB' : s+' B');
-
-  // Office viewer สำหรับ docx/xlsx/pptx
-  const officeViewer = (rawUrl) => `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(rawUrl)}`;
-
-  const el = (sel, root=document) => root.querySelector(sel);
-  const els = (sel, root=document) => Array.from(root.querySelectorAll(sel));
-
-  // ====== THEME TOGGLE ======
-  const themeBtn = el('#themeBtn');
-  themeBtn?.addEventListener('click', () => {
-    const key = 'theme-preference';
-    const cur = localStorage.getItem(key) || 'auto';
-    const next = cur === 'dark' ? 'light' : cur === 'light' ? 'auto' : 'dark';
-    localStorage.setItem(key, next);
-    applyTheme();
-  });
-  function applyTheme(){
-    const pref = localStorage.getItem('theme-preference') || 'auto';
-    document.documentElement.dataset.theme = pref;
-    themeBtn.textContent = `🌗 ธีม: ${pref}`;
-    if (pref === 'dark') document.documentElement.style.colorScheme = 'dark';
-    else if (pref === 'light') document.documentElement.style.colorScheme = 'light';
-    else document.documentElement.style.colorScheme = 'light dark';
-  }
-  applyTheme();
-
-  // ====== FETCH FROM GITHUB ======
-  const repoSelect = el('#repoSelect');
-  REPOS.forEach(r => {
-    const opt = document.createElement('option');
-    opt.value = r; opt.textContent = r; repoSelect.appendChild(opt);
-  });
-  repoSelect.value = DEFAULT_REPO;
-
-  const search = el('#search');
-  const typeFilter = el('#typeFilter');
-  const itemsWrap = el('#items');
-  const empty = el('#empty');
-
-  let ALL_ITEMS = [];
-
-  async function fetchPath(owner, repo, path){
-    const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
-    const res = await fetch(url, { headers: { 'Accept': 'application/vnd.github+json' }});
-    if (!res.ok) return [];
-    const data = await res.json();
-    return Array.isArray(data) ? data.filter(x => x.type === 'file') : [];
-  }
-
-  async function loadRepo(owner, repo){
-    ALL_ITEMS = [];
-    itemsWrap.innerHTML = '';
-    empty.style.display = 'none';
-
-    for (const p of CONTENT_PATHS){
-      try{
-        const arr = await fetchPath(owner, repo, p);
-        ALL_ITEMS.push(...arr.map(x => ({...x, _repo: repo, _path: p})));
-      }catch(_){ /* noop */ }
+    // ====== THEME TOGGLE ======
+    const themeToggle = document.getElementById('themeToggle');
+    const root = document.documentElement;
+    function applyTheme(theme) {
+      if (theme === 'dark') root.classList.add('dark'); else root.classList.remove('dark');
+      localStorage.setItem('theme', theme);
     }
-    // ถ้าโฟลเดอร์ที่กำหนดไม่มีไฟล์ ลองอ่านที่รากรีโปแบบสำรอง
-    if (ALL_ITEMS.length === 0){
-      try{ ALL_ITEMS = await fetchPath(owner, repo, ''); }catch(_){ ALL_ITEMS = []; }
-      ALL_ITEMS = ALL_ITEMS.filter(x => !['index.html','README.md'].includes(x.name));
+    const savedTheme = localStorage.getItem('theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    applyTheme(savedTheme);
+    themeToggle.addEventListener('click', () => applyTheme(root.classList.contains('dark') ? 'light' : 'dark'));
+
+    // ====== UTIL ======
+    const $ = (sel) => document.querySelector(sel);
+    const projectGrid = $('#projectGrid');
+    const mediaGrid = $('#mediaGrid');
+    const docsGrid = $('#docsGrid');
+    const langFilter = $('#langFilter');
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // ====== PROJECTS (GitHub REST) ======
+    async function loadRepos() {
+      const url = `https://api.github.com/users/${CONFIG.githubUser}/repos?sort=updated&per_page=50`;
+      const res = await fetch(url, { headers: { 'Accept': 'application/vnd.github+json' }});
+      if (!res.ok) { projectGrid.innerHTML = errorCard('โหลด repo ไม่สำเร็จ'); return; }
+      const all = await res.json();
+      // เอา fork ออก และซ่อน repo ที่เป็น github.io เอง
+      const repos = all.filter(r => !r.fork && r.name !== `${CONFIG.githubUser}.github.io`).slice(0, CONFIG.projectsLimit);
+      renderLangFilter(all);
+      renderRepos(repos);
+      langFilter.addEventListener('change', () => {
+        const v = langFilter.value;
+        const filtered = v === 'all' ? repos : repos.filter(r => (r.language || 'Other') === v);
+        renderRepos(filtered);
+      });
     }
 
-    render();
-  }
-
-  function render(){
-    itemsWrap.innerHTML = '';
-    const q = (search.value || '').toLowerCase();
-    const t = typeFilter.value;
-    const list = ALL_ITEMS.filter(it => {
-      const type = byExt(it.name);
-      const okType = (t === 'all') || (type === t) || (t==='doc' && type==='doc');
-      const okText = !q || it.name.toLowerCase().includes(q);
-      return okType && okText;
-    });
-
-    if (list.length === 0){ empty.style.display = 'block'; return; } else empty.style.display = 'none';
-
-    for (const it of list){
-      const type = byExt(it.name);
-      const card = el('#cardTpl').content.firstElementChild.cloneNode(true);
-      card.classList.add('col-3');
-
-      const previewLink = el('.previewLink', card);
-      const img = el('.thumb', card);
-      const title = el('h3', card);
-      const meta = el('.fileMeta', card);
-      const tags = el('.tags', card);
-
-      const raw = toRaw(it);
-      title.textContent = it.name;
-      meta.textContent = `${ICON[type]} ${type.toUpperCase()} · ${fmtSize(it.size)} · ${it._repo}/${it._path}`;
-
-      // Preview strategy by type
-      if (type === 'image'){
-        img.src = raw; img.alt = it.name; previewLink.href = raw;
-      } else if (type === 'video'){
-        img.remove();
-        const v = document.createElement('video'); v.className = 'thumb'; v.controls = true; v.src = raw; v.playsInline = true; v.preload = 'metadata';
-        previewLink.appendChild(v); previewLink.href = raw;
-      } else if (type === 'pdf'){
-        img.src = 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 56%22><rect width=%22100%25%22 height=%22100%25%22 fill=%22%2312111a%22/><text x=%2250%25%22 y=%2252%25%22 fill=%22%23fff%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22Segoe UI%22 font-size=%2220%22>PDF Preview</text></svg>';
-        previewLink.href = raw; previewLink.target = '_blank';
-      } else if (type === 'doc'){
-        img.src = 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 56%22><rect width=%22100%25%22 height=%22100%25%22 fill=%22%2312111a%22/><text x=%2250%25%22 y=%2252%25%22 fill=%22%23fff%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22Segoe UI%22 font-size=%2218%22>Office Doc</text></svg>';
-        previewLink.href = officeViewer(raw);
-      } else {
-        img.src = 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 56%22><rect width=%22100%25%22 height=%22100%25%22 fill=%22%2312111a%22/><text x=%2250%25%22 y=%2252%25%22 fill=%22%23fff%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22Segoe UI%22 font-size=%2220%22>File</text></svg>';
-        previewLink.href = raw;
-      }
-
-      // tags
-      const tg1 = document.createElement('span'); tg1.className = 'tag'; tg1.textContent = type;
-      const tg2 = document.createElement('span'); tg2.className = 'tag'; tg2.textContent = it._repo;
-      tags.append(tg1, tg2);
-
-      itemsWrap.appendChild(card);
+    function renderLangFilter(all) {
+      const langs = Array.from(new Set(all.map(r => r.language || 'Other'))).sort();
+      langFilter.innerHTML = `<option value="all">All</option>` + langs.map(l => `<option value="${l}">${l}</option>`).join('');
     }
-  }
 
-  // Event bindings
-  search.addEventListener('input', render);
-  typeFilter.addEventListener('change', render);
-  repoSelect.addEventListener('change', () => loadRepo(USERNAME, repoSelect.value || DEFAULT_REPO));
+    function renderRepos(repos) {
+      projectGrid.innerHTML = repos.map(r => {
+        const topics = (r.topics || []).slice(0, 5).map(t => `<span class='px-2 py-0.5 text-xs rounded-full bg-slate-200/60 dark:bg-slate-800/60'>${t}</span>`).join(' ');
+        return `
+          <article class="glass rounded-2xl p-5 border hover:shadow-glow transition">
+            <div class="flex items-start justify-between">
+              <h3 class="font-semibold text-lg leading-snug"><a href="${r.homepage || r.html_url}" target="_blank" class="hover:underline">${r.name}</a></h3>
+              <span class="text-xs text-slate-500">★ ${r.stargazers_count}</span>
+            </div>
+            <p class="mt-2 text-sm text-slate-400">${r.description || ''}</p>
+            <div class="mt-3 flex flex-wrap gap-2">${topics}</div>
+            <div class="mt-4 flex items-center justify-between text-xs text-slate-500">
+              <span>${r.language || 'Other'}</span>
+              <a class="underline" href="${r.html_url}" target="_blank">Source</a>
+            </div>
+          </article>`;
+      }).join('');
+    }
 
-  // Start
-  loadRepo(USERNAME, DEFAULT_REPO);
+    function errorCard(msg) { return `<div class='glass rounded-2xl p-6 border'>${msg}</div>`; }
+
+    // ====== MEDIA/DOCS from assets repo ======
+    async function listContents(path) {
+      const url = `https://api.github.com/repos/${CONFIG.githubUser}/${CONFIG.assetsRepo}/contents/${path}`;
+      const res = await fetch(url, { headers: { 'Accept': 'application/vnd.github+json' }});
+      if (!res.ok) return [];
+      return await res.json();
+    }
+
+    function isImage(name) { return /\.(png|jpe?g|gif|webp|svg)$/i.test(name); }
+    function isVideo(name) { return /\.(mp4|webm|ogg)$/i.test(name); }
+    function isDoc(name) { return /\.(pdf|docx?|xlsx?|pptx?)$/i.test(name); }
+
+    async function loadMedia() {
+      const items = await listContents(CONFIG.mediaPath);
+      if (!items.length) { mediaGrid.innerHTML = errorCard('ยังไม่มีไฟล์ใน assetsRepo/media'); return; }
+      mediaGrid.innerHTML = items.map(it => {
+        if (isImage(it.name)) {
+          return `<figure class="glass rounded-2xl p-3 border"><img loading="lazy" src="${it.download_url}" alt="${it.name}" class="rounded-xl w-full object-cover aspect-[4/3]"/><figcaption class="mt-2 text-xs text-slate-500 truncate">${it.name}</figcaption></figure>`
+        }
+        if (isVideo(it.name)) {
+          return `<figure class="glass rounded-2xl p-3 border"><video class="rounded-xl w-full" controls preload="metadata"><source src="${it.download_url}"></video><figcaption class="mt-2 text-xs text-slate-500 truncate">${it.name}</figcaption></figure>`
+        }
+        return '';
+      }).join('');
+    }
+
+    async function loadDocs() {
+      const items = await listContents(CONFIG.docsPath);
+      if (!items.length) { docsGrid.innerHTML = errorCard('ยังไม่มีไฟล์ใน assetsRepo/docs'); return; }
+      docsGrid.innerHTML = items.filter(it => isDoc(it.name)).map(it => {
+        return `<a href="${it.download_url}" target="_blank" class="glass rounded-2xl p-4 border hover:shadow-glow transition block">
+          <div class="font-medium">${it.name}</div>
+          <div class="text-xs text-slate-500">เปิดดู / ดาวน์โหลด</div>
+        </a>`
+      }).join('');
+    }
+
+    // Boot
+    loadRepos();
+    loadMedia();
+    loadDocs();
   </script>
 </body>
 </html>
