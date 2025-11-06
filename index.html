@@ -100,14 +100,14 @@
   <!-- Media Gallery -->
   <section id="media" class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
     <h2 class="text-2xl sm:text-3xl font-bold mb-2">Media</h2>
-    <p class="text-slate-500 mb-6">รูป / วิดีโอ จาก repo <code>portfolio-assets</code> โฟลเดอร์ <code>media/</code></p>
+    <p class="text-slate-500 mb-6">รูป / วิดีโอ จาก repo นี้ โฟลเดอร์ <code>media/</code></p>
     <div id="mediaGrid" class="grid gap-4 sm:gap-6 grid-auto"></div>
   </section>
 
   <!-- Docs -->
   <section id="docs" class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
     <h2 class="text-2xl sm:text-3xl font-bold mb-2">Docs</h2>
-    <p class="text-slate-500 mb-6">PDF/Word/Excel จาก repo <code>portfolio-assets</code> โฟลเดอร์ <code>docs/</code></p>
+    <p class="text-slate-500 mb-6">PDF/Word/Excel จาก repo นี้ โฟลเดอร์ <code>docs/</code></p>
     <div id="docsGrid" class="grid gap-4 sm:gap-6 grid-auto"></div>
   </section>
 
@@ -136,12 +136,12 @@
     const CONFIG = {
       githubUser: 'AisunX',                 // ชื่อผู้ใช้ GitHub ของคุณ
       projectsLimit: 6,                     // จำนวน repo ที่จะแสดง
-      assetsRepo: 'portfolio-assets',       // ชื่อ repo ที่เก็บไฟล์สื่อ
-      mediaPath: 'media',                   // โฟลเดอร์รูป/วิดีโอใน assetsRepo
-      docsPath: 'docs',                     // โฟลเดอร์เอกสารใน assetsRepo
+      assetsRepo: 'AisunX.github.io',       // ชี้กลับมาที่ repo นี้ (เพราะคุณเก็บ media/docs ไว้ที่นี่)
+      mediaPath: 'media',                   // โฟลเดอร์รูป/วิดีโอ
+      docsPath: 'docs',                     // โฟลเดอร์เอกสาร
       // --- extras ---
-      pinnedRepos: [],                      // ใส่ชื่อ repo ที่อยาก "พิน" เอง เช่น ['CodeBreaker-Academy','uio00799.github.io']
-      projectsJsonURL: null                 // ถ้าอยากเลี่ยง rate limit ให้ใส่ลิงก์ JSON ที่ build ไว้ เช่น '/data/projects.json'
+      pinnedRepos: [],                      // ใส่ชื่อ repo ที่อยาก "พิน" เอง เช่น ['CodeBreaker-Academy']
+      projectsJsonURL: null                 // ถ้าอยากเลี่ยง rate limit ให้ใส่ '/data/projects.json'
     };
 
     // ====== THEME TOGGLE ======
@@ -231,7 +231,7 @@
 
     function errorCard(msg) { return `<div class='glass rounded-2xl p-6 border'>${msg}</div>`; }
 
-    // ====== MEDIA/DOCS from assets repo ======
+    // ====== MEDIA/DOCS from this repo ======
     async function listContents(path) {
       const url = `https://api.github.com/repos/${CONFIG.githubUser}/${CONFIG.assetsRepo}/contents/${path}`;
       const res = await fetch(url, { headers: { 'Accept': 'application/vnd.github+json' }});
@@ -245,7 +245,7 @@
 
     async function loadMedia() {
       const items = await listContents(CONFIG.mediaPath);
-      if (!items.length) { mediaGrid.innerHTML = errorCard('ยังไม่มีไฟล์ใน assetsRepo/media'); return; }
+      if (!items.length) { mediaGrid.innerHTML = errorCard('ยังไม่มีไฟล์ใน media/'); return; }
       mediaGrid.innerHTML = items.map(it => {
         if (isImage(it.name)) {
           return `<figure class="glass rounded-2xl p-3 border"><img loading="lazy" src="${it.download_url}" alt="${it.name}" class="rounded-xl w-full object-cover aspect-[4/3]"/><figcaption class="mt-2 text-xs text-slate-500 truncate">${it.name}</figcaption></figure>`
@@ -259,7 +259,7 @@
 
     async function loadDocs() {
       const items = await listContents(CONFIG.docsPath);
-      if (!items.length) { docsGrid.innerHTML = errorCard('ยังไม่มีไฟล์ใน assetsRepo/docs'); return; }
+      if (!items.length) { docsGrid.innerHTML = errorCard('ยังไม่มีไฟล์ใน docs/'); return; }
       docsGrid.innerHTML = items.filter(it => isDoc(it.name)).map(it => {
         return `<a href="${it.download_url}" target="_blank" class="glass rounded-2xl p-4 border hover:shadow-glow transition block">
           <div class="font-medium">${it.name}</div>

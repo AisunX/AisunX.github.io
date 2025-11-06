@@ -11,18 +11,5 @@
       "game",
       "puzzle"
     ]
-  },
-  {
-    "name": "AisunX-Portfolio",
-    "description": "My web portfolio",
-    "language": "JavaScript",
-    "html_url": "https://github.com/AisunX/AisunX-Portfolio",
-    "homepage": "https://AisunX.github.io/AisunX-Portfolio",
-    "stargazers_count": 0,
-    "topics": [
-      "web",
-      "tailwind",
-      "github-pages"
-    ]
   }
 ]
