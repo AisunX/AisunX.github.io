@@ -1,277 +1,265 @@
-<!DOCTYPE html>
-<html lang="th" class="scroll-smooth">
+<!doctype html>
+<html lang="th" data-bs-theme="light">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AisunX — Portfolio</title>
-  <meta name="description" content="ผลงานของ AisunX: โปรเจกต์ โค้ด งานดีไซน์ สื่อ และเอกสารวิจัย บน GitHub Pages" />
-  <meta property="og:title" content="AisunX — Portfolio" />
-  <meta property="og:description" content="รวมผลงานเด่น โปรเจกต์ และสื่อทั้งหมดของฉัน" />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="/cover.png" />
-  <meta name="theme-color" content="#0ea5e9" />
-
-  <!-- Tailwind CDN (ง่าย เร็ว ไม่ต้อง build) -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    // Tailwind config: font + container + dark mode class
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ["Noto Sans Thai", "Inter", "system-ui", "Helvetica", "Arial", "sans-serif"],
-          },
-          boxShadow: {
-            glow: '0 0 30px rgba(14,165,233,0.25)'
-          },
-        }
-      }
-    }
-  </script>
-  <!-- Google Font (ไทยอ่านง่าย) -->
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;600;700&display=swap" rel="stylesheet">
-
-  <style>
-    /* Utilities เพิ่มเติมแบบเล็ก ๆ */
-    .glass { background: rgba(255,255,255,0.06); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.12); }
-    .text-gradient { background: linear-gradient(90deg, #22d3ee, #60a5fa 60%, #a78bfa); -webkit-background-clip: text; background-clip: text; color: transparent; }
-    .grid-auto { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
-  </style>
+  <meta name="description" content="ผลงานและโปรเจกต์ของ AisunX บน GitHub">
+  <meta property="og:title" content="AisunX — Portfolio">
+  <meta property="og:description" content="รวมผลงานล่าสุด, รูป/วิดีโอ, และเอกสารอ้างอิง">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://AisunX.github.io">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 </head>
-<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 font-sans">
-  <!-- Sticky Nav -->
-  <header class="sticky top-0 z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur border-b border-slate-200/60 dark:border-slate-800/60">
-    <nav class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-      <a href="#top" class="font-bold tracking-tight text-lg">AisunX<span class="text-sky-500">.io</span></a>
-      <div class="flex items-center gap-2">
-        <button id="themeToggle" class="px-3 py-1.5 text-sm rounded-xl border border-slate-300/60 dark:border-slate-700/60 hover:shadow-glow">🌙/☀️</button>
-        <a href="#projects" class="px-3 py-1.5 text-sm rounded-xl hover:bg-slate-100 dark:hover:bg-slate-900">Projects</a>
-        <a href="#media" class="px-3 py-1.5 text-sm rounded-xl hover:bg-slate-100 dark:hover:bg-slate-900">Media</a>
-        <a href="#docs" class="px-3 py-1.5 text-sm rounded-xl hover:bg-slate-100 dark:hover:bg-slate-900">Docs</a>
-        <a href="#contact" class="px-3 py-1.5 text-sm rounded-xl hover:bg-slate-100 dark:hover:bg-slate-900">Contact</a>
+<body class="bg-body">
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg border-bottom sticky-top bg-body">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="#">AisunX<span class="text-primary">.github.io</span></a>
+      <div class="d-flex gap-2">
+        <button id="themeToggle" class="btn btn-outline-secondary btn-sm" title="Toggle theme">
+          <i class="bi bi-moon-stars"></i>
+        </button>
       </div>
-    </nav>
-  </header>
+    </div>
+  </nav>
 
   <!-- Hero -->
-  <section id="top" class="relative">
-    <div class="absolute inset-0 bg-[radial-gradient(50%_50%_at_50%_0%,rgba(56,189,248,0.20),rgba(99,102,241,0.10),transparent_70%)] pointer-events-none"></div>
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 sm:py-24">
-      <div class="grid md:grid-cols-2 gap-10 items-center">
-        <div>
-          <p class="text-xs uppercase tracking-[0.2em] text-slate-500">Portfolio • GitHub Pages</p>
-          <h1 class="mt-2 text-4xl sm:text-5xl font-extrabold leading-tight text-gradient">สวัสดี 👋 ผมคือ AisunX — ทำเกม โค้ด เว็บ และสื่อมัลติมีเดีย</h1>
-          <p class="mt-4 text-slate-600 dark:text-slate-300 leading-relaxed">หน้านี้รวมโปรเจกต์จริงที่ทำ ลงโค้ดบน GitHub, ตัวอย่างงานดีไซน์/วิดีโอ, เอกสารวิจัย และลิงก์ที่เกี่ยวข้อง ทั้งหมดเป็น Live demo พร้อมซอร์สโค้ดให้ดู</p>
-          <div class="mt-6 flex flex-wrap gap-3">
-            <a href="#projects" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-sky-500 text-white hover:bg-sky-600 shadow-glow">ดูโปรเจกต์เด่น</a>
-            <a href="./resume.pdf" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-300/70 dark:border-slate-700/70 hover:bg-slate-100 dark:hover:bg-slate-900">ดาวน์โหลดเรซูเม่</a>
-            <a href="https://github.com/AisunX" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-300/70 dark:border-slate-700/70 hover:bg-slate-100 dark:hover:bg-slate-900">GitHub</a>
-          </div>
-        </div>
-        <div class="md:justify-self-end">
-          <div class="glass rounded-2xl p-4 sm:p-6 border shadow-xl">
-            <video id="heroVideo" class="w-full rounded-xl" autoplay muted loop playsinline poster="/cover.png">
-              <!-- ใส่วิดีโอโปรโมตสั้น ๆ (ไม่บังคับ) -->
-              <source src="/promo.mp4" type="video/mp4" />
-            </video>
-            <div class="mt-3 text-xs text-slate-500">Tip: วิดีโอ/ภาพหน้าปกใส่ไฟล์ <code>promo.mp4</code> / <code>cover.png</code> ที่โฟลเดอร์ราก</div>
-          </div>
+  <header class="container py-5">
+    <div id="heroVideoWrap" class="ratio ratio-21x9 d-none mb-3">
+      <video id="heroVideo" playsinline muted autoplay loop class="rounded-4 border"></video>
+    </div>
+    <div id="heroImgWrap" class="d-none mb-3">
+      <img id="heroImg" class="img-fluid rounded-4 border" alt="Cover">
+    </div>
+    <div class="row align-items-center">
+      <div class="col-lg-8">
+        <h1 class="display-5 fw-bold">สวัสดี นี่คือพอร์ตของ AisunX</h1>
+        <p class="lead mb-3">รวมงาน dev/design ล่าสุด—ดึงจาก GitHub อัตโนมัติ + มีแกลเลอรีสื่อและเอกสาร</p>
+        <div class="d-flex gap-2 flex-wrap">
+          <a id="resumeBtn" href="resume.pdf" class="btn btn-primary d-none" target="_blank" rel="noopener">
+            <i class="bi bi-file-earmark-person"></i> ดาวน์โหลดเรซูเม่
+          </a>
+          <a href="#projects" class="btn btn-outline-primary"><i class="bi bi-grid-3x3-gap"></i> ดูโปรเจกต์</a>
+          <a href="#media" class="btn btn-outline-secondary"><i class="bi bi-image"></i> ดูสื่อ</a>
         </div>
       </div>
     </div>
-  </section>
+  </header>
 
   <!-- Projects -->
-  <section id="projects" class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
-    <div class="flex items-end justify-between gap-4 mb-6">
-      <div>
-        <h2 class="text-2xl sm:text-3xl font-bold">Projects</h2>
-        <p class="text-slate-500">ดึงอัตโนมัติจาก GitHub (ล่าสุด 6 repo ที่อัปเดตบ่อย)</p>
-      </div>
-      <div class="flex items-center gap-2">
-        <label class="text-sm text-slate-500">Filter:</label>
-        <select id="langFilter" class="px-3 py-2 rounded-xl border border-slate-300/70 dark:border-slate-700/70 bg-white dark:bg-slate-900"></select>
+  <section id="projects" class="container py-5">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+      <h2 class="h3 m-0">โปรเจกต์ล่าสุด</h2>
+      <div class="d-flex gap-2">
+        <select id="langFilter" class="form-select form-select-sm" style="width:200px">
+          <option value="">ทุกภาษา</option>
+        </select>
       </div>
     </div>
-    <div id="projectGrid" class="grid gap-4 sm:gap-6 grid-auto"></div>
+    <div id="repoGrid" class="row g-3"></div>
+    <div id="repoEmpty" class="text-muted text-center py-4 d-none">ยังไม่พบโปรเจกต์ที่ตรงเงื่อนไข</div>
   </section>
 
-  <!-- Media Gallery -->
-  <section id="media" class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
-    <h2 class="text-2xl sm:text-3xl font-bold mb-2">Media</h2>
-    <p class="text-slate-500 mb-6">รูป / วิดีโอ จาก repo นี้ โฟลเดอร์ <code>media/</code></p>
-    <div id="mediaGrid" class="grid gap-4 sm:gap-6 grid-auto"></div>
+  <!-- Media -->
+  <section id="media" class="container py-5">
+    <h2 class="h3">สื่อ (รูป/วิดีโอ)</h2>
+    <div id="mediaGrid" class="row g-3"></div>
+    <div id="mediaEmpty" class="text-muted text-center py-3 d-none">ยังไม่มีไฟล์ใน <code>portfolio-assets/media</code></div>
+    <hr class="my-4">
+    <h3 class="h5">เอกสาร (PDF/Word/Excel)</h3>
+    <ul id="docList" class="list-group"></ul>
+    <div id="docEmpty" class="text-muted text-center py-3 d-none">ยังไม่มีไฟล์ใน <code>portfolio-assets/docs</code></div>
   </section>
 
-  <!-- Docs -->
-  <section id="docs" class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
-    <h2 class="text-2xl sm:text-3xl font-bold mb-2">Docs</h2>
-    <p class="text-slate-500 mb-6">PDF/Word/Excel จาก repo นี้ โฟลเดอร์ <code>docs/</code></p>
-    <div id="docsGrid" class="grid gap-4 sm:gap-6 grid-auto"></div>
-  </section>
-
-  <!-- Contact -->
-  <section id="contact" class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
-    <div class="glass rounded-2xl p-6 md:p-8">
-      <h2 class="text-2xl sm:text-3xl font-bold mb-3">Contact</h2>
-      <p class="text-slate-400 mb-6">เปิดรับงาน/คุยโปรเจกต์ใหม่ ๆ — ทักมาได้เลย</p>
-      <div class="flex flex-wrap gap-3">
-        <a href="mailto:hello@aisunx.dev" class="px-4 py-2 rounded-xl bg-sky-500 text-white hover:bg-sky-600">อีเมล</a>
-        <a href="https://x.com/" target="_blank" class="px-4 py-2 rounded-xl border border-slate-300/70 dark:border-slate-700/70 hover:bg-slate-100 dark:hover:bg-slate-900">X / Twitter</a>
-        <a href="https://www.youtube.com/" target="_blank" class="px-4 py-2 rounded-xl border border-slate-300/70 dark:border-slate-700/70 hover:bg-slate-100 dark:hover:bg-slate-900">YouTube</a>
-        <a href="https://www.tiktok.com/" target="_blank" class="px-4 py-2 rounded-xl border border-slate-300/70 dark:border-slate-700/70 hover:bg-slate-100 dark:hover:bg-slate-900">TikTok</a>
-      </div>
-    </div>
-  </section>
-
-  <footer class="border-t border-slate-200/70 dark:border-slate-800/70">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 text-center text-sm text-slate-500">
-      © <span id="year"></span> AisunX — Built on GitHub Pages • <a href="https://github.com/AisunX/AisunX.github.io" class="underline" target="_blank">Source</a>
-    </div>
+  <footer class="container py-5 border-top text-center text-muted">
+    <div>© <span id="year"></span> AisunX — Powered by GitHub Pages</div>
   </footer>
 
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
   <script>
-    // ====== BASIC CONFIG (ปรับตามของจริง) ======
-    const CONFIG = {  
-      githubUser: 'AisunX',                 // ชื่อผู้ใช้ GitHub ของคุณ
-      projectsLimit: 6,                     // จำนวน repo ที่จะแสดง
-      assetsRepo: 'aisunx.github.io',       // ชี้กลับมาที่ repo นี้ (เพราะคุณเก็บ media/docs ไว้ที่นี่)
-      mediaPath: 'assetsRepo/media',                   // โฟลเดอร์รูป/วิดีโอ
-      docsPath: 'assetsRepo/docs',                     // โฟลเดอร์เอกสาร
-      // --- extras ---
-      pinnedRepos: [],                      // ใส่ชื่อ repo ที่อยาก "พิน" เอง เช่น ['CodeBreaker-Academy']
-      projectsJsonURL: null                 // ถ้าอยากเลี่ยง rate limit ให้ใส่ '/data/projects.json'
-    };
+  // ========== CONFIG ==========
+  const CONFIG = {
+    githubUser: 'AisunX',
+    assetsRepo: 'portfolio-assets',
+    reposToExclude: ['AisunX.github.io', 'portfolio-assets'],
+    maxRepos: 6
+  };
 
-    // ====== THEME TOGGLE ======
-    const themeToggle = document.getElementById('themeToggle');
-    const root = document.documentElement;
-    function applyTheme(theme) {
-      if (theme === 'dark') root.classList.add('dark'); else root.classList.remove('dark');
-      localStorage.setItem('theme', theme);
+  // ========== THEME ==========
+  const themeToggle = document.getElementById('themeToggle');
+  function setTheme(t){ document.documentElement.setAttribute('data-bs-theme', t); localStorage.setItem('theme', t); }
+  themeToggle.addEventListener('click', () => {
+    const cur = document.documentElement.getAttribute('data-bs-theme') || 'light';
+    setTheme(cur === 'light' ? 'dark' : 'light');
+  });
+  setTheme(localStorage.getItem('theme') || 'light');
+
+  // ========== HERO DETECTION ==========
+  async function fileExists(path){ try{ const r = await fetch(path, {method:'HEAD'}); return r.ok; }catch{ return false; } }
+  (async () => {
+    const hasVideo = await fileExists('promo.mp4');
+    const hasCover = await fileExists('cover.png');
+    if(hasVideo){
+      const v = document.getElementById('heroVideo'); v.src = 'promo.mp4';
+      document.getElementById('heroVideoWrap').classList.remove('d-none');
+    }else if(hasCover){
+      const i = document.getElementById('heroImg'); i.src = 'cover.png';
+      document.getElementById('heroImgWrap').classList.remove('d-none');
     }
-    const savedTheme = localStorage.getItem('theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    applyTheme(savedTheme);
-    themeToggle.addEventListener('click', () => applyTheme(root.classList.contains('dark') ? 'light' : 'dark'));
+    if(await fileExists('resume.pdf')){
+      document.getElementById('resumeBtn').classList.remove('d-none');
+    }
+  })();
 
-    // ====== UTIL ======
-    const $ = (sel) => document.querySelector(sel);
-    const projectGrid = $('#projectGrid');
-    const mediaGrid = $('#mediaGrid');
-    const docsGrid = $('#docsGrid');
-    const langFilter = $('#langFilter');
+  // ========== UTIL ==========
+  function fmtDate(str){ return new Date(str).toLocaleDateString('th-TH'); }
+  function iconByExt(name){
+    const ext = name.split('.').pop().toLowerCase();
+    if(['png','jpg','jpeg','gif','webp','svg'].includes(ext)) return 'bi-image';
+    if(['mp4','webm','mov'].includes(ext)) return 'bi-film';
+    if(['pdf'].includes(ext)) return 'bi-file-earmark-pdf';
+    if(['doc','docx'].includes(ext)) return 'bi-file-earmark-word';
+    if(['xls','xlsx','csv'].includes(ext)) return 'bi-file-earmark-excel';
+    return 'bi-file-earmark';
+  }
 
-    // เก็บชุด repo ปัจจุบันสำหรับ filter
-    let currentRepos = [];
+  // ========== GITHUB ==========
+  async function loadRepos(){
+    const url = `https://api.github.com/users/${CONFIG.githubUser}/repos?per_page=100&sort=updated`;
+    const res = await fetch(url);
+    if(!res.ok){ console.warn('GitHub rate limit?'); return []; }
+    const data = await res.json();
+    return data
+      .filter(r => !r.fork)
+      .filter(r => !CONFIG.reposToExclude.includes(r.name))
+      .slice(0, CONFIG.maxRepos);
+  }
 
-    document.getElementById('year').textContent = new Date().getFullYear();
+  function renderRepos(repos){
+    const grid = document.getElementById('repoGrid');
+    const empty = document.getElementById('repoEmpty');
+    grid.innerHTML = '';
+    if(!repos.length){ empty.classList.remove('d-none'); return; }
+    empty.classList.add('d-none');
 
-    // ====== PROJECTS (GitHub REST / Static JSON) ======
-    async function loadRepos() {
-      try {
-        let data = [];
-        if (CONFIG.projectsJsonURL) {
-          const res = await fetch(CONFIG.projectsJsonURL, { cache: 'no-store' });
-          if (!res.ok) throw new Error('โหลด projects.json ไม่สำเร็จ');
-          data = await res.json();
-        } else {
-          const url = `https://api.github.com/users/${CONFIG.githubUser}/repos?sort=updated&per_page=50`;
-          const res = await fetch(url, { headers: { 'Accept': 'application/vnd.github+json' }});
-          if (!res.ok) throw new Error('โหลด repo ไม่สำเร็จ');
-          data = await res.json();
-        }
+    // สร้างรายการภาษาให้ฟิลเตอร์
+    const langs = new Set(repos.map(r => r.language).filter(Boolean));
+    const langSel = document.getElementById('langFilter');
+    langs.forEach(l => {
+      const opt = document.createElement('option'); opt.value = l; opt.textContent = l; langSel.appendChild(opt);
+    });
+    langSel.addEventListener('change', () => {
+      [...grid.children].forEach(card => {
+        const lang = card.getAttribute('data-lang') || '';
+        card.classList.toggle('d-none', langSel.value && lang !== langSel.value);
+      });
+      // แสดงข้อความว่างเมื่อกรองแล้วไม่เหลือ
+      const left = [...grid.children].filter(c => !c.classList.contains('d-none')).length;
+      document.getElementById('repoEmpty').classList.toggle('d-none', left !== 0);
+    });
 
-        let repos = data.filter(r => !r.fork && r.name !== `${CONFIG.githubUser}.github.io`);
+    repos.forEach(r => {
+      const col = document.createElement('div');
+      col.className = 'col-12 col-md-6 col-lg-4';
+      col.setAttribute('data-lang', r.language || '');
+      col.innerHTML = `
+        <div class="card h-100 shadow-sm">
+          <div class="card-body d-flex flex-column">
+            <h3 class="h6 card-title mb-1">
+              <a href="${r.html_url}" target="_blank" rel="noopener" class="link-body-emphasis">${r.name}</a>
+            </h3>
+            <p class="card-text small text-muted flex-grow-1">${r.description || ''}</p>
+            <div class="d-flex justify-content-between align-items-center small">
+              <span><i class="bi bi-code-slash"></i> ${r.language || 'N/A'}</span>
+              <span class="text-nowrap"><i class="bi bi-star"></i> ${r.stargazers_count} · <i class="bi bi-git"></i> ${fmtDate(r.updated_at)}</span>
+            </div>
+          </div>
+        </div>`;
+      grid.appendChild(col);
+    });
+  }
 
-        if (CONFIG.pinnedRepos && CONFIG.pinnedRepos.length) {
-          const byName = new Map(repos.map(r => [r.name, r]));
-          repos = CONFIG.pinnedRepos.map(n => byName.get(n)).filter(Boolean);
-        }
+  async function loadContents(path){
+    const url = `https://api.github.com/repos/${CONFIG.githubUser}/${CONFIG.assetsRepo}/contents/${path}`;
+    const res = await fetch(url);
+    if(!res.ok) return [];
+    return await res.json(); // [{name, path, download_url, type}]
+  }
 
-        repos = repos.slice(0, CONFIG.projectsLimit);
+  function renderMedia(items){
+    const grid = document.getElementById('mediaGrid');
+    const empty = document.getElementById('mediaEmpty');
+    grid.innerHTML = '';
+    if(!items.length){ empty.classList.remove('d-none'); return; }
+    empty.classList.add('d-none');
 
-        currentRepos = repos;
-        renderLangFilter(currentRepos);
-        renderRepos(currentRepos);
-
-        langFilter.addEventListener('change', () => {
-          const v = langFilter.value;
-          const filtered = v === 'all' ? currentRepos : currentRepos.filter(r => (r.language || 'Other') === v);
-          renderRepos(filtered);
-        });
-      } catch (err) {
-        projectGrid.innerHTML = errorCard(err.message || 'มีบางอย่างผิดพลาด');
+    items.forEach(it => {
+      const ext = it.name.split('.').pop().toLowerCase();
+      const col = document.createElement('div');
+      col.className = 'col-12 col-md-6 col-lg-4';
+      if(['mp4','webm','mov'].includes(ext)){
+        col.innerHTML = `
+          <div class="card h-100 shadow-sm">
+            <video controls class="card-img-top rounded-top" src="${it.download_url}"></video>
+            <div class="card-body small d-flex justify-content-between align-items-center">
+              <span><i class="bi ${iconByExt(it.name)}"></i> ${it.name}</span>
+              <a class="btn btn-sm btn-outline-secondary" href="${it.download_url}" target="_blank" rel="noopener">เปิด</a>
+            </div>
+          </div>`;
+      }else{
+        col.innerHTML = `
+          <div class="card h-100 shadow-sm">
+            <img loading="lazy" class="card-img-top" src="${it.download_url}" alt="${it.name}">
+            <div class="card-body small d-flex justify-content-between align-items-center">
+              <span><i class="bi ${iconByExt(it.name)}"></i> ${it.name}</span>
+              <a class="btn btn-sm btn-outline-secondary" href="${it.download_url}" target="_blank" rel="noopener">เปิด</a>
+            </div>
+          </div>`;
       }
-    }
+      grid.appendChild(col);
+    });
+  }
 
-    function renderLangFilter(list) {
-      const langs = Array.from(new Set(list.map(r => r.language || 'Other'))).sort();
-      langFilter.innerHTML = `<option value="all">All</option>` + langs.map(l => `<option value="${l}">${l}</option>`).join('');
-    }
+  function renderDocs(items){
+    const list = document.getElementById('docList');
+    const empty = document.getElementById('docEmpty');
+    list.innerHTML = '';
+    if(!items.length){ empty.classList.remove('d-none'); return; }
+    empty.classList.add('d-none');
 
-    function renderRepos(repos) {
-      projectGrid.innerHTML = repos.map(r => {
-        const topics = (r.topics || []).slice(0, 5).map(t => `<span class='px-2 py-0.5 text-xs rounded-full bg-slate-200/60 dark:bg-slate-800/60'>${t}</span>`).join(' ');
-        return `
-          <article class="glass rounded-2xl p-5 border hover:shadow-glow transition">
-            <div class="flex items-start justify-between">
-              <h3 class="font-semibold text-lg leading-snug"><a href="${r.homepage || r.html_url}" target="_blank" class="hover:underline">${r.name}</a></h3>
-              <span class="text-xs text-slate-500">★ ${r.stargazers_count ?? 0}</span>
-            </div>
-            <p class="mt-2 text-sm text-slate-400">${r.description || ''}</p>
-            <div class="mt-3 flex flex-wrap gap-2">${topics}</div>
-            <div class="mt-4 flex items-center justify-between text-xs text-slate-500">
-              <span>${r.language || 'Other'}</span>
-              <a class="underline" href="${r.html_url}" target="_blank">Source</a>
-            </div>
-          </article>`;
-      }).join('');
-    }
+    items.forEach(it => {
+      const li = document.createElement('li');
+      li.className = 'list-group-item d-flex justify-content-between align-items-center';
+      li.innerHTML = `
+        <div><i class="bi ${iconByExt(it.name)}"></i> ${it.name}</div>
+        <a class="btn btn-sm btn-outline-primary" href="${it.download_url}" target="_blank" rel="noopener">เปิด</a>`;
+      list.appendChild(li);
+    });
+  }
 
-    function errorCard(msg) { return `<div class='glass rounded-2xl p-6 border'>${msg}</div>`; }
+  // Boot
+  document.getElementById('year').textContent = new Date().getFullYear();
 
-    // ====== MEDIA/DOCS from this repo ======
-    async function listContents(path) {
-      const url = `https://api.github.com/repos/${CONFIG.githubUser}/${CONFIG.assetsRepo}/contents/${path}`;
-      const res = await fetch(url, { headers: { 'Accept': 'application/vnd.github+json' }});
-      if (!res.ok) return [];
-      return await res.json();
-    }
+  (async () => {
+    try{
+      const repos = await loadRepos();
+      renderRepos(repos);
+    }catch(e){ console.error(e); }
 
-    function isImage(name) { return /\.(png|jpe?g|gif|webp|svg)$/i.test(name); }
-    function isVideo(name) { return /\.(mp4|webm|ogg)$/i.test(name); }
-    function isDoc(name) { return /\.(pdf|docx?|xlsx?|pptx?)$/i.test(name); }
+    try{
+      const media = await loadContents('media');
+      renderMedia(media.filter(x => x.type === 'file'));
+    }catch(e){ console.error(e); }
 
-    async function loadMedia() {
-      const items = await listContents(CONFIG.mediaPath);
-      if (!items.length) { mediaGrid.innerHTML = errorCard('ยังไม่มีไฟล์ใน media/'); return; }
-      mediaGrid.innerHTML = items.map(it => {
-        if (isImage(it.name)) {
-          return `<figure class="glass rounded-2xl p-3 border"><img loading="lazy" src="${it.download_url}" alt="${it.name}" class="rounded-xl w-full object-cover aspect-[4/3]"/><figcaption class="mt-2 text-xs text-slate-500 truncate">${it.name}</figcaption></figure>`
-        }
-        if (isVideo(it.name)) {
-          return `<figure class="glass rounded-2xl p-3 border"><video class="rounded-xl w-full" controls preload="metadata"><source src="${it.download_url}"></video><figcaption class="mt-2 text-xs text-slate-500 truncate">${it.name}</figcaption></figure>`
-        }
-        return '';
-      }).join('');
-    }
-
-    async function loadDocs() {
-      const items = await listContents(CONFIG.docsPath);
-      if (!items.length) { docsGrid.innerHTML = errorCard('ยังไม่มีไฟล์ใน docs/'); return; }
-      docsGrid.innerHTML = items.filter(it => isDoc(it.name)).map(it => {
-        return `<a href="${it.download_url}" target="_blank" class="glass rounded-2xl p-4 border hover:shadow-glow transition block">
-          <div class="font-medium">${it.name}</div>
-          <div class="text-xs text-slate-500">เปิดดู / ดาวน์โหลด</div>
-        </a>`
-      }).join('');
-    }
-
-    // Boot
-    loadRepos();
-    loadMedia();
-    loadDocs();
+    try{
+      const docs = await loadContents('docs');
+      renderDocs(docs.filter(x => x.type === 'file'));
+    }catch(e){ console.error(e); }
+  })();
   </script>
 </body>
 </html>
